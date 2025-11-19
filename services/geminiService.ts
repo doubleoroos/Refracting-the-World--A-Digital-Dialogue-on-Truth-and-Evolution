@@ -78,6 +78,39 @@ export const generateThematicImage = async (prompt: string): Promise<string | nu
   }
 };
 
+export const generateManifestoVideo = async (prompt: string): Promise<string | null> => {
+  try {
+    const ai = getClient();
+    let operation = await ai.models.generateVideos({
+      model: 'veo-3.1-fast-generate-preview',
+      prompt: prompt,
+      config: {
+        numberOfVideos: 1,
+        resolution: '720p',
+        aspectRatio: '16:9',
+      },
+    });
+
+    while (!operation.done) {
+      await new Promise((resolve) => setTimeout(resolve, 5000));
+      operation = await ai.operations.getVideosOperation({ operation: operation });
+    }
+
+    const videoUri = operation.response?.generatedVideos?.[0]?.video?.uri;
+    if (!videoUri) return null;
+
+    // The response.body contains the MP4 bytes. You must append an API key when fetching from the download link.
+    const response = await fetch(`${videoUri}&key=${process.env.API_KEY}`);
+    if (!response.ok) return null;
+    
+    const blob = await response.blob();
+    return URL.createObjectURL(blob);
+  } catch (error) {
+    console.error("Veo Video Gen Error:", error);
+    return null;
+  }
+};
+
 export const summarizeManifesto = async (manifestoPoints: string[], language: Language): Promise<string> => {
   try {
     const ai = getClient();

@@ -94,6 +94,12 @@ export interface Content {
       button: string;
       loading: string;
     };
+    videoGen: {
+      title: string;
+      subtitle: string;
+      button: string;
+      loading: string;
+    };
     cards: {
       pool: { title: string; desc: string };
       eco: { title: string; desc: string };

@@ -1,8 +1,14 @@
 import React, { useState } from 'react';
 import { Section, Language } from '../types';
 import { CONTENT } from '../constants';
-import { CheckCircle, Globe, Leaf, Users, Calendar, TrendingUp, Flag, ChevronLeft, ChevronRight, Sparkles, Loader2, Image as ImageIcon, X, AlertCircle } from 'lucide-react';
-import { summarizeManifesto, generateThematicImage } from '../services/geminiService';
+import { CheckCircle, Globe, Leaf, Users, Calendar, TrendingUp, Flag, ChevronLeft, ChevronRight, Sparkles, Loader2, Image as ImageIcon, X, AlertCircle, Video } from 'lucide-react';
+import { summarizeManifesto, generateThematicImage, generateManifestoVideo } from '../services/geminiService';
+
+// Local interface for casting to avoid global namespace pollution/conflicts
+interface AIStudio {
+  hasSelectedApiKey: () => Promise<boolean>;
+  openSelectKey: () => Promise<void>;
+}
 
 interface ManifestoProps {
   language: Language;
@@ -19,6 +25,11 @@ const Manifesto: React.FC<ManifestoProps> = ({ language }) => {
   const [generatedManifestoImage, setGeneratedManifestoImage] = useState<string | null>(null);
   const [isGeneratingImage, setIsGeneratingImage] = useState(false);
   const [imageError, setImageError] = useState(false);
+
+  // Video Gen State
+  const [isGeneratingVideo, setIsGeneratingVideo] = useState(false);
+  const [generatedVideoUrl, setGeneratedVideoUrl] = useState<string | null>(null);
+  const [videoError, setVideoError] = useState(false);
 
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % content.carousel.items.length);
@@ -55,6 +66,38 @@ const Manifesto: React.FC<ManifestoProps> = ({ language }) => {
         setImageError(true);
     }
     setIsGeneratingImage(false);
+  };
+
+  const handleGenerateVideo = async () => {
+    // Check if AI Studio environment has selected key
+    const aiStudio = (window as unknown as { aistudio?: AIStudio }).aistudio;
+
+    if (aiStudio && aiStudio.hasSelectedApiKey && aiStudio.openSelectKey) {
+      try {
+        const hasKey = await aiStudio.hasSelectedApiKey();
+        if (!hasKey) {
+          await aiStudio.openSelectKey();
+          // We proceed assuming user selected a key or closed dialog
+        }
+      } catch (e) {
+        console.error("Error checking API key status", e);
+      }
+    }
+
+    setIsGeneratingVideo(true);
+    setVideoError(false);
+    setGeneratedVideoUrl(null);
+    
+    const prompt = `Cinematic video montage representing a strategic roadmap: ${content.cards.pool.title}, ${content.cards.eco.title}, ${content.cards.access.title}. Abstract, futuristic, high quality, smooth motion.`;
+    
+    const result = await generateManifestoVideo(prompt);
+    
+    if (result) {
+        setGeneratedVideoUrl(result);
+    } else {
+        setVideoError(true);
+    }
+    setIsGeneratingVideo(false);
   };
 
   return (
@@ -144,7 +187,7 @@ const Manifesto: React.FC<ManifestoProps> = ({ language }) => {
         </div>
 
         {/* Image Generation Section */}
-        <div className="max-w-3xl mx-auto mb-24 bg-white p-8 md:p-10 rounded-sm shadow-lg border border-black/5 relative overflow-hidden">
+        <div className="max-w-3xl mx-auto mb-12 bg-white p-8 md:p-10 rounded-sm shadow-lg border border-black/5 relative overflow-hidden">
             <div className="absolute top-0 left-0 w-1 h-full bg-accent"></div>
             
             <div className="text-center mb-8">
@@ -193,6 +236,62 @@ const Manifesto: React.FC<ManifestoProps> = ({ language }) => {
                             <span className="text-[10px] uppercase tracking-widest text-accent mb-1 block">Prompt</span>
                             <p className="text-sm font-serif italic opacity-90">"{imagePrompt}"</p>
                         </div>
+                    </div>
+                )}
+            </div>
+        </div>
+
+        {/* Video Generation Section */}
+        <div className="max-w-3xl mx-auto mb-24 bg-void text-white p-8 md:p-10 rounded-sm shadow-2xl border border-white/10 relative overflow-hidden">
+             {/* Decorative background blur */}
+            <div className="absolute -top-10 -right-10 w-64 h-64 bg-accent/20 rounded-full blur-3xl pointer-events-none"></div>
+            
+            <div className="relative z-10 text-center mb-8">
+                <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-white/10 mb-4">
+                   <Video size={24} className="text-accent" />
+                </div>
+                <h4 className="text-2xl font-serif italic mb-3">{content.videoGen.title}</h4>
+                <p className="text-xs text-white/60 uppercase tracking-widest max-w-md mx-auto">{content.videoGen.subtitle}</p>
+            </div>
+
+            <div className="relative z-10 flex flex-col items-center gap-6">
+                <button
+                    onClick={handleGenerateVideo}
+                    disabled={isGeneratingVideo}
+                    className="bg-accent text-white px-10 py-4 rounded-sm hover:bg-white hover:text-void transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 min-w-[200px] shadow-[0_0_20px_rgba(217,70,37,0.4)] hover:shadow-none"
+                >
+                    {isGeneratingVideo ? <Loader2 size={18} className="animate-spin" /> : <Sparkles size={18} />}
+                    <span className="text-xs font-bold uppercase tracking-widest">{content.videoGen.button}</span>
+                </button>
+
+                {isGeneratingVideo && (
+                  <div className="text-xs text-white/50 animate-pulse">
+                    {content.videoGen.loading}
+                  </div>
+                )}
+
+                {videoError && (
+                    <div className="flex items-center gap-2 text-accent text-xs animate-fadeIn justify-center bg-white/5 p-3 rounded-sm border border-accent/20">
+                        <AlertCircle size={14} />
+                        <span>Video generation failed. Please try again.</span>
+                    </div>
+                )}
+
+                {generatedVideoUrl && (
+                    <div className="relative w-full aspect-video bg-black rounded-sm overflow-hidden animate-fadeIn border border-white/10 shadow-2xl mt-4">
+                        <video 
+                          controls 
+                          className="w-full h-full object-cover" 
+                          src={generatedVideoUrl} 
+                          autoPlay
+                          loop
+                        />
+                        <button 
+                            onClick={() => setGeneratedVideoUrl(null)}
+                            className="absolute top-4 right-4 w-8 h-8 bg-white/10 backdrop-blur text-white rounded-full flex items-center justify-center hover:bg-accent transition-colors z-20"
+                        >
+                            <X size={16} />
+                        </button>
                     </div>
                 )}
             </div>

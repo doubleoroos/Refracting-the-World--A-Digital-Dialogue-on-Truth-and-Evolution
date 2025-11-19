@@ -139,6 +139,12 @@ export const CONTENT: Record<Language, Content> = {
         button: 'Generate Concept',
         loading: 'Rendering Vision...'
       },
+      videoGen: {
+        title: 'Veo Strategy Visualization',
+        subtitle: 'Generate a cinematic video montage representing the strategic pillars.',
+        button: 'Generate Video Roadmap',
+        loading: 'Veo is rendering (this may take a moment)...'
+      },
       cards: {
         pool: { title: 'Resource Pooling', desc: 'Consolidating efforts of independent artists into one high-impact platform to minimize administrative overhead.' },
         eco: { title: 'Eco-Responsibility', desc: '"Zero Waste" by design. Green hosting. A carbon-neutral alternative to physical festivals.' },
@@ -287,6 +293,12 @@ export const CONTENT: Record<Language, Content> = {
         placeholder: 'ex : Un objectif d\'appareil photo fondant dans un paysage numérique...',
         button: 'Générer le Concept',
         loading: 'Rendu de la Vision...'
+      },
+      videoGen: {
+        title: 'Visualisation Stratégique Veo',
+        subtitle: 'Générez un montage vidéo cinématographique représentant les piliers stratégiques.',
+        button: 'Générer Feuille de Route Vidéo',
+        loading: 'Veo effectue le rendu (cela peut prendre un moment)...'
       },
       cards: {
         pool: { title: 'Mutualisation', desc: 'Consolider les efforts d\'artistes indépendants en une plateforme à fort impact pour minimiser les frais administratifs.' },
