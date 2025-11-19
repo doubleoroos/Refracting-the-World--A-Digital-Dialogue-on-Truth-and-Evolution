@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Section, Language } from '../types';
 import { CONTENT } from '../constants';
-import { CheckCircle, Globe, Leaf, Users, Calendar, TrendingUp, Flag } from 'lucide-react';
+import { CheckCircle, Globe, Leaf, Users, Calendar, TrendingUp, Flag, ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface ManifestoProps {
   language: Language;
@@ -9,6 +9,15 @@ interface ManifestoProps {
 
 const Manifesto: React.FC<ManifestoProps> = ({ language }) => {
   const content = CONTENT[language].manifesto;
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % content.carousel.items.length);
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + content.carousel.items.length) % content.carousel.items.length);
+  };
 
   return (
     <section id={Section.MANIFESTO} className="py-24 px-6 bg-paper text-void">
@@ -62,6 +71,52 @@ const Manifesto: React.FC<ManifestoProps> = ({ language }) => {
             <p className="text-xs text-void/70 leading-relaxed">
               {content.cards.fair.desc}
             </p>
+          </div>
+        </div>
+
+        {/* Key Works Carousel */}
+        <div className="mb-24">
+          <h4 className="text-center font-serif text-2xl mb-10 italic text-void/80">{content.carousel.title}</h4>
+          <div className="relative max-w-4xl mx-auto aspect-[16/9] bg-black rounded-sm overflow-hidden shadow-2xl group">
+             
+             {/* Slides */}
+             {content.carousel.items.map((item, index) => (
+               <div 
+                  key={index} 
+                  className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${index === currentSlide ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+               >
+                  <img src={item.image} alt={item.caption} className="w-full h-full object-cover opacity-80 group-hover:opacity-60 transition-opacity duration-500" />
+                  <div className="absolute bottom-0 left-0 right-0 p-8 bg-gradient-to-t from-black/80 to-transparent text-white">
+                    <h5 className="text-2xl font-serif italic mb-1">{item.caption}</h5>
+                    <p className="text-xs uppercase tracking-widest text-accent">{item.artist}</p>
+                  </div>
+               </div>
+             ))}
+
+             {/* Controls */}
+             <button 
+               onClick={prevSlide}
+               className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/10 backdrop-blur hover:bg-accent text-white flex items-center justify-center transition-all opacity-0 group-hover:opacity-100"
+             >
+               <ChevronLeft size={20} />
+             </button>
+             <button 
+               onClick={nextSlide}
+               className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/10 backdrop-blur hover:bg-accent text-white flex items-center justify-center transition-all opacity-0 group-hover:opacity-100"
+             >
+               <ChevronRight size={20} />
+             </button>
+
+             {/* Indicators */}
+             <div className="absolute top-6 right-6 flex gap-2">
+               {content.carousel.items.map((_, idx) => (
+                 <div 
+                    key={idx} 
+                    className={`w-1.5 h-1.5 rounded-full transition-all ${idx === currentSlide ? 'bg-accent w-4' : 'bg-white/50'}`}
+                 ></div>
+               ))}
+             </div>
+
           </div>
         </div>
 

@@ -131,6 +131,31 @@ export const CONTENT: Record<Language, Content> = {
         access: { title: 'Accessibility (WCAG 2.1)', desc: 'Audited for high-contrast modes and screen readers. Free global access.' },
         fair: { title: 'Fair Remuneration', desc: 'Adhering to the "Fair Practice Code". Budgeted fees for artist copyright and curation.' }
       },
+      carousel: {
+        title: 'Curated Key Works',
+        items: [
+          {
+            image: 'https://picsum.photos/id/56/1200/800',
+            caption: 'Geometric Silence',
+            artist: 'Ronald Tilleman'
+          },
+          {
+             image: 'https://picsum.photos/id/122/1200/800',
+             caption: 'Urban Distortion',
+             artist: 'Mike Pasarella'
+          },
+          {
+            image: 'https://picsum.photos/id/203/1200/800',
+            caption: 'The Human Condition',
+            artist: 'Prakash Kumararajan'
+          },
+          {
+            image: 'https://picsum.photos/id/338/1200/800',
+            caption: 'Echoes of History',
+            artist: 'Roos van der Jagt'
+          }
+        ]
+      },
       timeline: {
         title: 'Operational Timeline',
         phases: [
@@ -236,6 +261,31 @@ export const CONTENT: Record<Language, Content> = {
         eco: { title: 'Éco-Responsabilité', desc: '"Zéro Déchet" par conception. Hébergement vert. Une alternative neutre en carbone aux festivals physiques.' },
         access: { title: 'Accessibilité (WCAG 2.1)', desc: 'Audité pour les modes à contraste élevé et les lecteurs d\'écran. Accès mondial gratuit.' },
         fair: { title: 'Rémunération Équitable', desc: 'Respect du "Fair Practice Code". Frais budgétés pour les droits d\'auteur et le commissariat.' }
+      },
+      carousel: {
+        title: 'Œuvres Clés Sélectionnées',
+        items: [
+          {
+            image: 'https://picsum.photos/id/56/1200/800',
+            caption: 'Silence Géométrique',
+            artist: 'Ronald Tilleman'
+          },
+          {
+             image: 'https://picsum.photos/id/122/1200/800',
+             caption: 'Distorsion Urbaine',
+             artist: 'Mike Pasarella'
+          },
+          {
+            image: 'https://picsum.photos/id/203/1200/800',
+            caption: 'La Condition Humaine',
+            artist: 'Prakash Kumararajan'
+          },
+          {
+            image: 'https://picsum.photos/id/338/1200/800',
+            caption: 'Échos de l\'Histoire',
+            artist: 'Roos van der Jagt'
+          }
+        ]
       },
       timeline: {
         title: 'Calendrier Opérationnel',

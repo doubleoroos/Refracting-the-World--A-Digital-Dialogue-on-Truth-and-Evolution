@@ -23,6 +23,12 @@ export interface Photographer {
   image: string;
 }
 
+export interface CarouselItem {
+  image: string;
+  caption: string;
+  artist: string;
+}
+
 export interface Content {
   nav: NavItem[];
   hero: {
@@ -78,6 +84,10 @@ export interface Content {
       eco: { title: string; desc: string };
       access: { title: string; desc: string };
       fair: { title: string; desc: string };
+    };
+    carousel: {
+      title: string;
+      items: CarouselItem[];
     };
     timeline: {
       title: string;
