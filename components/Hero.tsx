@@ -1,7 +1,14 @@
 import React from 'react';
-import { Section } from '../types';
+import { Section, Language } from '../types';
+import { CONTENT } from '../constants';
 
-const Hero: React.FC = () => {
+interface HeroProps {
+  language: Language;
+}
+
+const Hero: React.FC<HeroProps> = ({ language }) => {
+  const content = CONTENT[language].hero;
+
   return (
     <section 
       id={Section.HERO} 
@@ -20,31 +27,29 @@ const Hero: React.FC = () => {
       <div className="relative z-10 text-center max-w-5xl px-6">
         <div className="mb-6 flex flex-col items-center gap-2">
             <span className="px-3 py-1 border border-accent/50 text-accent text-xs tracking-[0.2em] uppercase rounded-full bg-accent/10 backdrop-blur-md">
-            Project Proposal · Bicentennial of Photography
+            {content.tag}
             </span>
             <span className="text-white/40 text-xs tracking-widest uppercase font-light">
-            Sept 1, 2026 – Sept 1, 2027
+            {content.dates}
             </span>
         </div>
 
         <h1 className="font-serif text-5xl md:text-7xl lg:text-8xl mb-6 leading-tight mix-blend-screen">
-          Refracting<br/>
-          <span className="italic text-white/80">the World</span>
+          {content.title.split(' ').slice(0, 1)}<br/>
+          <span className="italic text-white/80">{content.title.split(' ').slice(1).join(' ')}</span>
         </h1>
         
         <h2 className="text-xl md:text-2xl text-white font-light mb-8 tracking-wide">
-            A Digital Dialogue on Truth and Evolution
+            {content.subtitle}
         </h2>
 
         <p className="text-base md:text-lg text-white/60 font-light leading-relaxed max-w-3xl mx-auto border-l-2 border-accent pl-6 text-left">
-          Submitted by <strong>Earth Rising Foundation</strong>.<br/><br/>
-          In the age of AI and deep-fakes, the "Utopia of Accuracy" is fractured. 
-          We invite you to deconstruct 200 years of seeing.
+          {content.intro}
         </p>
       </div>
       
       <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white/30 text-xs uppercase tracking-widest animate-bounce">
-        <span>Start the Dialogue</span>
+        <span>{content.cta}</span>
         <div className="w-px h-12 bg-white/30"></div>
       </div>
     </section>

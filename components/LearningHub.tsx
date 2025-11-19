@@ -1,25 +1,31 @@
-import React, { useState } from 'react';
-import { Section } from '../types';
+import React, { useState, useEffect } from 'react';
+import { Section, Language } from '../types';
+import { CONTENT } from '../constants';
 import { explainTechnique } from '../services/geminiService';
 import { BookOpen, ArrowRight, Loader2 } from 'lucide-react';
 
-const TOPICS = [
-  "History of Optics: The Camera Obscura",
-  "Media Literacy: How to 'read' images",
-  "The Ethics of Digital Manipulation",
-  "From Niépce to AI: Ongoing Invention"
-];
+interface LearningHubProps {
+  language: Language;
+}
 
-const LearningHub: React.FC = () => {
+const LearningHub: React.FC<LearningHubProps> = ({ language }) => {
   const [selectedTopic, setSelectedTopic] = useState<string | null>(null);
   const [explanation, setExplanation] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+
+  const content = CONTENT[language].pillarC;
+
+  // Reset state when language changes to avoid mismatched content
+  useEffect(() => {
+    setSelectedTopic(null);
+    setExplanation(null);
+  }, [language]);
 
   const handleTopicClick = async (topic: string) => {
     setSelectedTopic(topic);
     setLoading(true);
     setExplanation(null);
-    const text = await explainTechnique(topic);
+    const text = await explainTechnique(topic, language);
     setExplanation(text);
     setLoading(false);
   };
@@ -29,12 +35,11 @@ const LearningHub: React.FC = () => {
       <div className="max-w-4xl mx-auto text-center mb-16">
         <div className="flex justify-center items-center gap-4 mb-6">
             <span className="text-6xl text-white/10 font-serif font-bold">C</span>
-            <h3 className="text-accent tracking-widest uppercase text-sm font-medium">Pillar C: Visual Education</h3>
+            <h3 className="text-accent tracking-widest uppercase text-sm font-medium">{content.tag}</h3>
         </div>
-        <h2 className="text-3xl md:text-4xl font-serif italic mb-4">The Educational Hub</h2>
+        <h2 className="text-3xl md:text-4xl font-serif italic mb-4">{content.title}</h2>
         <p className="text-white/60">
-          Deliverables: Downloadable "Bicentennial Kits" for schools. <br/>
-          Empowering children and adolescents to actively participate in the comprehension of images.
+          {content.description}
         </p>
       </div>
 
@@ -42,10 +47,10 @@ const LearningHub: React.FC = () => {
         <div className="bg-white/5 border border-white/10 p-8 rounded-sm">
           <h3 className="text-xl font-medium mb-6 flex items-center gap-2">
             <BookOpen className="text-accent" size={20} />
-            Bicentennial Curriculum
+            {content.curriculumTitle}
           </h3>
           <div className="space-y-3">
-            {TOPICS.map((topic) => (
+            {content.topics.map((topic) => (
               <button
                 key={topic}
                 onClick={() => handleTopicClick(topic)}
@@ -60,25 +65,25 @@ const LearningHub: React.FC = () => {
             ))}
           </div>
           <div className="mt-8 pt-6 border-t border-white/10 text-xs text-white/40">
-            * Available in French and English via PDF download.
+            {content.note}
           </div>
         </div>
 
         <div className="bg-white/5 border border-white/10 p-8 rounded-sm min-h-[300px] flex flex-col justify-center items-center text-center relative overflow-hidden">
            {!selectedTopic && (
-             <p className="text-white/30 italic">Select a curriculum module to preview content...</p>
+             <p className="text-white/30 italic">{language === 'fr' ? 'Sélectionnez un module...' : 'Select a curriculum module...'}</p>
            )}
 
            {loading && (
              <div className="flex flex-col items-center gap-4 text-accent">
                <Loader2 size={32} className="animate-spin" />
-               <span className="text-xs uppercase tracking-widest">Accessing Knowledge Base...</span>
+               <span className="text-xs uppercase tracking-widest">{content.loading}</span>
              </div>
            )}
 
            {explanation && !loading && (
              <div className="text-left animate-fadeIn">
-                <h4 className="text-accent uppercase tracking-widest text-xs mb-4">Preview Content</h4>
+                <h4 className="text-accent uppercase tracking-widest text-xs mb-4">{content.preview}</h4>
                 <p className="text-lg leading-relaxed font-serif text-white/90">
                   {explanation}
                 </p>

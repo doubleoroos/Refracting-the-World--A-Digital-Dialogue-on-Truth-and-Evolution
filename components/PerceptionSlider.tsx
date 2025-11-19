@@ -1,19 +1,29 @@
 import React, { useState, useRef } from 'react';
-import { Section } from '../types';
+import { Section, Language } from '../types';
+import { CONTENT } from '../constants';
 import { MoveHorizontal, Sparkles } from 'lucide-react';
 import { analyzeImageContext } from '../services/geminiService';
 
-const PerceptionSlider: React.FC = () => {
+interface PerceptionSliderProps {
+  language: Language;
+}
+
+const PerceptionSlider: React.FC<PerceptionSliderProps> = ({ language }) => {
   const [sliderValue, setSliderValue] = useState(50);
   const [aiCommentary, setAiCommentary] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const [isHovering, setIsHovering] = useState(false);
 
+  const content = CONTENT[language].pillarA;
+
   const handleGenerateInsight = async () => {
     if (aiCommentary) return;
     setIsLoading(true);
-    const text = await analyzeImageContext("An architectural structure shown in raw documentary reality versus a highly interpreted, artistic truth that alters the narrative.");
+    const text = await analyzeImageContext(
+      "An architectural structure shown in raw documentary reality versus a highly interpreted, artistic truth that alters the narrative.",
+      language
+    );
     setAiCommentary(text);
     setIsLoading(false);
   };
@@ -42,40 +52,30 @@ const PerceptionSlider: React.FC = () => {
         <div className="order-2 md:order-1">
           <div className="flex items-center gap-4 mb-6">
             <span className="text-6xl text-white/10 font-serif font-bold">A</span>
-            <h3 className="text-accent tracking-widest uppercase text-sm font-medium">Pillar A: Perception Slider</h3>
+            <h3 className="text-accent tracking-widest uppercase text-sm font-medium">{content.tag}</h3>
           </div>
-          <h2 className="text-4xl md:text-5xl font-serif italic mb-8">Reality vs. Distortion</h2>
+          <h2 className="text-4xl md:text-5xl font-serif italic mb-8">{content.title}</h2>
           
           <div className="mb-6 space-y-4 text-white/70 leading-relaxed">
-            <p>
-              As stated in the Bicentennial Manifesto, Niépce’s invention was born from a desire to "capture reality." 
-              For two centuries, we believed the photograph was an objective record.
-            </p>
-            <p>
-               <strong>The "Utopia of Accuracy" is fractured.</strong>
-            </p>
-            <p>
-              This interactive feature juxtaposes the "Reference Reality" (documentary shot) with the "Artistic Truth" (interpretive work).
-              Move the slider to see how framing, lens choice, and post-processing alter the narrative of a building or a face.
-            </p>
+            {content.description}
           </div>
 
           {/* AI Insight Box */}
           <div className="p-6 border border-white/10 bg-white/5 rounded-sm backdrop-blur-sm min-h-[120px]">
             <div className="flex justify-between items-start mb-4">
               <span className="text-xs uppercase tracking-widest text-white/50 flex items-center gap-2">
-                <Sparkles size={12} className="text-accent"/> Curatorial AI Companion
+                <Sparkles size={12} className="text-accent"/> {content.labels.aiButton.split(' ').slice(0,1)} AI
               </span>
               <button 
                 onClick={handleGenerateInsight}
                 disabled={isLoading || !!aiCommentary}
                 className="text-xs text-accent hover:text-white transition-colors disabled:opacity-50"
               >
-                {isLoading ? 'Analyzing...' : aiCommentary ? 'Analysis Complete' : 'Interrogate the Medium'}
+                {isLoading ? 'Analyzing...' : aiCommentary ? content.labels.aiButtonActive : content.labels.aiButton}
               </button>
             </div>
             <p className="font-serif text-lg italic text-white/90">
-              {aiCommentary ? `"${aiCommentary}"` : <span className="text-white/30">Ask AI: Does the lens capture reality, or create it?</span>}
+              {aiCommentary ? `"${aiCommentary}"` : <span className="text-white/30">{content.labels.aiPrompt}</span>}
             </p>
           </div>
         </div>
@@ -109,13 +109,13 @@ const PerceptionSlider: React.FC = () => {
               />
                {/* Label for Raw side */}
               <div className="absolute top-6 left-6 bg-black/50 backdrop-blur text-white text-xs px-3 py-1 tracking-widest border border-white/20">
-                REFERENCE REALITY
+                {content.labels.raw}
               </div>
             </div>
 
             {/* Label for Processed side */}
             <div className="absolute top-6 right-6 bg-accent/80 backdrop-blur text-white text-xs px-3 py-1 tracking-widest border border-white/20">
-              ARTISTIC TRUTH
+              {content.labels.processed}
             </div>
 
             {/* Slider Handle Line */}
@@ -130,8 +130,8 @@ const PerceptionSlider: React.FC = () => {
           </div>
           
           <div className="absolute -bottom-8 left-0 w-full flex justify-between text-xs text-white/30 tracking-widest uppercase">
-             <span>Raw Documentation</span>
-             <span>Final Interpretation</span>
+             <span>{content.labels.raw}</span>
+             <span>{content.labels.processed}</span>
           </div>
         </div>
 

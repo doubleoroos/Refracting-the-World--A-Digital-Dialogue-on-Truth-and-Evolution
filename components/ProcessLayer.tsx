@@ -1,24 +1,29 @@
 import React, { useState } from 'react';
-import { Section } from '../types';
-import { Layers, Cpu, Sun, Camera } from 'lucide-react';
+import { Section, Language } from '../types';
+import { CONTENT } from '../constants';
+import { Layers, Cpu, Sun } from 'lucide-react';
 
-const ProcessLayer: React.FC = () => {
+interface ProcessLayerProps {
+  language: Language;
+}
+
+const ProcessLayer: React.FC<ProcessLayerProps> = ({ language }) => {
   const [activeLayer, setActiveLayer] = useState<'final' | 'digital' | 'physics'>('final');
 
+  const content = CONTENT[language].pillarB;
+  
+  // We construct the layers map inside the component to access localized strings
   const layers = {
     final: {
-      label: 'Output',
-      desc: 'The final work. A subjective interpretation of the world.',
+      ...content.layers.output,
       imageClass: 'grayscale-0 blur-0'
     },
     digital: {
-      label: 'Digital Darkroom',
-      desc: 'Chemistry & Software. Where the "act of seeing" becomes the "act of creating".',
+      ...content.layers.darkroom,
       imageClass: 'invert hue-rotate-180 contrast-150 opacity-80'
     },
     physics: {
-      label: 'Physics / Light',
-      desc: 'The raw sensor data. Light hitting the silicon. The only "objective" moment.',
+      ...content.layers.physics,
       imageClass: 'grayscale contrast-75 brightness-75 sepia-[.3]'
     }
   };
@@ -77,28 +82,28 @@ const ProcessLayer: React.FC = () => {
         <div className="order-2 flex flex-col justify-center">
            <div className="flex items-center gap-4 mb-6">
             <span className="text-6xl text-void/10 font-serif font-bold">B</span>
-            <h3 className="text-accent tracking-widest uppercase text-sm font-medium">Pillar B: The Process Layer</h3>
+            <h3 className="text-accent tracking-widest uppercase text-sm font-medium">{content.tag}</h3>
           </div>
-          <h2 className="text-4xl md:text-5xl font-serif italic mb-8">Ongoing Invention</h2>
+          <h2 className="text-4xl md:text-5xl font-serif italic mb-8">{content.title}</h2>
           
           <p className="text-void/80 leading-relaxed mb-6 text-lg">
-            Demystifying the "black box" of modern photography. Click to "explode" the image into its constituent layers, tracing the journey from Niépce to AI.
+            {content.description}
           </p>
 
           <div className="space-y-6">
             <div className={`transition-all duration-500 ${activeLayer === 'final' ? 'opacity-100 translate-x-0' : 'opacity-30 translate-x-4'}`}>
-               <h4 className="font-bold text-xl mb-2 flex items-center gap-2"><Layers size={18}/> Final Output</h4>
-               <p className="text-void/70 text-sm">The polished result presented to the viewer. This is the "Artistic Truth" – a curated reality.</p>
+               <h4 className="font-bold text-xl mb-2 flex items-center gap-2"><Layers size={18}/> {content.layers.output.label}</h4>
+               <p className="text-void/70 text-sm">{content.layers.output.desc}</p>
             </div>
 
             <div className={`transition-all duration-500 ${activeLayer === 'digital' ? 'opacity-100 translate-x-0' : 'opacity-30 translate-x-4'}`}>
-               <h4 className="font-bold text-xl mb-2 flex items-center gap-2"><Cpu size={18}/> Digital Darkroom (Chemistry/Software)</h4>
-               <p className="text-void/70 text-sm">Where the technological evolution happens. From chemical baths to algorithmic adjustments and generative AI fills.</p>
+               <h4 className="font-bold text-xl mb-2 flex items-center gap-2"><Cpu size={18}/> {content.layers.darkroom.label}</h4>
+               <p className="text-void/70 text-sm">{content.layers.darkroom.desc}</p>
             </div>
 
             <div className={`transition-all duration-500 ${activeLayer === 'physics' ? 'opacity-100 translate-x-0' : 'opacity-30 translate-x-4'}`}>
-               <h4 className="font-bold text-xl mb-2 flex items-center gap-2"><Sun size={18}/> Physics (Light & Sensor)</h4>
-               <p className="text-void/70 text-sm">The moment photons hit the sensor. The raw, linear data before human bias or software interpretation intervenes.</p>
+               <h4 className="font-bold text-xl mb-2 flex items-center gap-2"><Sun size={18}/> {content.layers.physics.label}</h4>
+               <p className="text-void/70 text-sm">{content.layers.physics.desc}</p>
             </div>
           </div>
         </div>
