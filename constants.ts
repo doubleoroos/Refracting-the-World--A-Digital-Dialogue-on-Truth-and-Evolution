@@ -132,6 +132,13 @@ export const CONTENT: Record<Language, Content> = {
         loading: 'Synthesizing Strategy...',
         title: 'Executive Summary'
       },
+      imageGen: {
+        title: 'Visualize the Manifesto',
+        subtitle: 'Generate a thematic image based on your own interpretation of the future of photography.',
+        placeholder: 'e.g., A camera lens melting into a digital landscape...',
+        button: 'Generate Concept',
+        loading: 'Rendering Vision...'
+      },
       cards: {
         pool: { title: 'Resource Pooling', desc: 'Consolidating efforts of independent artists into one high-impact platform to minimize administrative overhead.' },
         eco: { title: 'Eco-Responsibility', desc: '"Zero Waste" by design. Green hosting. A carbon-neutral alternative to physical festivals.' },
@@ -174,7 +181,7 @@ export const CONTENT: Record<Language, Content> = {
           { phase: "Phase 2", dates: "April 2026 – July 2026", title: "Development & Design", desc: "UX/UI design, WCAG audit, Educational copy (FR/EN)." },
           { phase: "Phase 3", dates: "August 2026", title: "Testing & Pre-launch", desc: "Beta testing with educators & Green Hosting setup." },
           { phase: "Phase 4", dates: "September 2026", title: "Official Launch", desc: "Go-live to coincide with Bicentennial start.", current: true },
-          { phase: "Phase 5", dates: "Sept 2026 – Sept 2027", title: "Dissemination", desc: "Monthly artist features & social media campaign." },
+          { phase: "Phase 5", dates: "Sept 2026 – Sept 2027", title: "Dissemination", desc: "Fonctionnalités mensuelles & campagne réseaux sociaux." },
         ]
       },
       budget: {
@@ -273,6 +280,13 @@ export const CONTENT: Record<Language, Content> = {
         button: 'Générer le Résumé Exécutif',
         loading: 'Synthèse de la Stratégie...',
         title: 'Résumé Exécutif'
+      },
+      imageGen: {
+        title: 'Visualiser le Manifeste',
+        subtitle: 'Générez une image thématique basée sur votre propre interprétation de l\'avenir de la photographie.',
+        placeholder: 'ex : Un objectif d\'appareil photo fondant dans un paysage numérique...',
+        button: 'Générer le Concept',
+        loading: 'Rendu de la Vision...'
       },
       cards: {
         pool: { title: 'Mutualisation', desc: 'Consolider les efforts d\'artistes indépendants en une plateforme à fort impact pour minimiser les frais administratifs.' },

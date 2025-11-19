@@ -87,6 +87,13 @@ export interface Content {
       loading: string;
       title: string;
     };
+    imageGen: {
+      title: string;
+      subtitle: string;
+      placeholder: string;
+      button: string;
+      loading: string;
+    };
     cards: {
       pool: { title: string; desc: string };
       eco: { title: string; desc: string };

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Section, Language } from '../types';
 import { CONTENT } from '../constants';
-import { CheckCircle, Globe, Leaf, Users, Calendar, TrendingUp, Flag, ChevronLeft, ChevronRight, Sparkles, Loader2 } from 'lucide-react';
-import { summarizeManifesto } from '../services/geminiService';
+import { CheckCircle, Globe, Leaf, Users, Calendar, TrendingUp, Flag, ChevronLeft, ChevronRight, Sparkles, Loader2, Image as ImageIcon, X } from 'lucide-react';
+import { summarizeManifesto, generateThematicImage } from '../services/geminiService';
 
 interface ManifestoProps {
   language: Language;
@@ -13,6 +13,11 @@ const Manifesto: React.FC<ManifestoProps> = ({ language }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [summary, setSummary] = useState<string | null>(null);
   const [isSummarizing, setIsSummarizing] = useState(false);
+  
+  // Image Gen State
+  const [imagePrompt, setImagePrompt] = useState('');
+  const [generatedManifestoImage, setGeneratedManifestoImage] = useState<string | null>(null);
+  const [isGeneratingImage, setIsGeneratingImage] = useState(false);
 
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % content.carousel.items.length);
@@ -33,6 +38,14 @@ const Manifesto: React.FC<ManifestoProps> = ({ language }) => {
     const result = await summarizeManifesto(points, language);
     setSummary(result);
     setIsSummarizing(false);
+  };
+
+  const handleGenerateImage = async () => {
+    if (!imagePrompt) return;
+    setIsGeneratingImage(true);
+    const result = await generateThematicImage(imagePrompt);
+    setGeneratedManifestoImage(result);
+    setIsGeneratingImage(false);
   };
 
   return (
@@ -116,6 +129,50 @@ const Manifesto: React.FC<ManifestoProps> = ({ language }) => {
               </p>
             </div>
           )}
+        </div>
+
+        {/* NEW: Image Generation Section */}
+        <div className="max-w-3xl mx-auto mb-24 bg-white p-8 rounded-sm shadow-sm border border-black/5">
+            <div className="text-center mb-6">
+                <h4 className="text-xl font-serif italic mb-2">{content.imageGen.title}</h4>
+                <p className="text-xs text-void/60 uppercase tracking-widest">{content.imageGen.subtitle}</p>
+            </div>
+
+            <div className="flex flex-col gap-4 relative">
+                <div className="flex gap-2">
+                    <input 
+                        type="text" 
+                        value={imagePrompt}
+                        onChange={(e) => setImagePrompt(e.target.value)}
+                        placeholder={content.imageGen.placeholder}
+                        className="flex-1 bg-paper border border-black/10 px-4 py-3 rounded-sm text-sm focus:outline-none focus:border-accent transition-colors"
+                        onKeyDown={(e) => e.key === 'Enter' && handleGenerateImage()}
+                    />
+                    <button
+                        onClick={handleGenerateImage}
+                        disabled={isGeneratingImage || !imagePrompt}
+                        className="bg-void text-white px-6 py-3 rounded-sm hover:bg-accent transition-colors disabled:opacity-50 flex items-center gap-2"
+                    >
+                        {isGeneratingImage ? <Loader2 size={16} className="animate-spin" /> : <ImageIcon size={16} />}
+                        <span className="text-xs font-bold uppercase tracking-widest hidden md:inline">{content.imageGen.button}</span>
+                    </button>
+                </div>
+
+                {generatedManifestoImage && (
+                    <div className="relative mt-4 aspect-video bg-black/5 rounded-sm overflow-hidden animate-fadeIn group">
+                        <img src={generatedManifestoImage} alt="Generated Vision" className="w-full h-full object-cover" />
+                        <button 
+                            onClick={() => setGeneratedManifestoImage(null)}
+                            className="absolute top-4 right-4 w-8 h-8 bg-black/50 backdrop-blur text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-accent"
+                        >
+                            <X size={16} />
+                        </button>
+                         <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent text-white opacity-0 group-hover:opacity-100 transition-opacity">
+                            <p className="text-xs font-serif italic">"{imagePrompt}"</p>
+                        </div>
+                    </div>
+                )}
+            </div>
         </div>
 
         {/* Key Works Carousel */}
