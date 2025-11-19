@@ -34,16 +34,16 @@ const Hero: React.FC<HeroProps> = ({ language }) => {
             </span>
         </div>
 
-        <h1 className="font-serif text-5xl md:text-7xl lg:text-8xl mb-6 leading-tight drop-shadow-lg">
+        <h1 className="font-serif text-5xl md:text-7xl lg:text-8xl mb-6 leading-tight drop-shadow-[0_5px_5px_rgba(0,0,0,0.8)]">
           {content.title.split(' ').slice(0, 1)}<br/>
           <span className="italic text-white/80">{content.title.split(' ').slice(1).join(' ')}</span>
         </h1>
         
-        <h2 className="text-xl md:text-2xl text-white font-light mb-8 tracking-wide">
+        <h2 className="text-xl md:text-2xl text-white font-light mb-8 tracking-wide drop-shadow-md">
             {content.subtitle}
         </h2>
 
-        <p className="text-base md:text-lg text-white/60 font-light leading-relaxed max-w-3xl mx-auto border-l-2 border-accent pl-6 text-left">
+        <p className="text-base md:text-lg text-white/60 font-light leading-relaxed max-w-3xl mx-auto border-l-2 border-accent pl-6 text-left backdrop-blur-sm py-2">
           {content.intro}
         </p>
       </div>

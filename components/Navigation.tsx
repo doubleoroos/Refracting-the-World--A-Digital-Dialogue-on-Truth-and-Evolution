@@ -58,20 +58,29 @@ const Navigation: React.FC<NavigationProps> = ({ activeSection, onNavigate, lang
           ))}
           
           {/* Language Toggle */}
-          <div className="flex items-center gap-2 ml-4 border-l border-white/20 pl-6">
-            <button 
-              onClick={() => onLanguageChange('en')}
-              className={`text-xs font-bold tracking-widest transition-colors ${language === 'en' ? 'text-accent' : 'text-white/40 hover:text-white'}`}
-            >
-              EN
-            </button>
-            <span className="text-white/20">/</span>
-             <button 
-              onClick={() => onLanguageChange('fr')}
-              className={`text-xs font-bold tracking-widest transition-colors ${language === 'fr' ? 'text-accent' : 'text-white/40 hover:text-white'}`}
-            >
-              FR
-            </button>
+          <div className="flex items-center gap-1 ml-4 border-l border-white/20 pl-6">
+            <div className="bg-white/10 rounded-full p-1 flex">
+              <button 
+                onClick={() => onLanguageChange('en')}
+                className={`px-3 py-1 rounded-full text-xs font-bold tracking-widest transition-all ${
+                  language === 'en' 
+                    ? 'bg-accent text-white shadow-md' 
+                    : 'text-white/40 hover:text-white hover:bg-white/5'
+                }`}
+              >
+                EN
+              </button>
+               <button 
+                onClick={() => onLanguageChange('fr')}
+                className={`px-3 py-1 rounded-full text-xs font-bold tracking-widest transition-all ${
+                  language === 'fr' 
+                    ? 'bg-accent text-white shadow-md' 
+                    : 'text-white/40 hover:text-white hover:bg-white/5'
+                }`}
+              >
+                FR
+              </button>
+            </div>
           </div>
         </div>
 
@@ -79,7 +88,7 @@ const Navigation: React.FC<NavigationProps> = ({ activeSection, onNavigate, lang
         <div className="flex items-center gap-4 md:hidden z-50">
            <button 
               onClick={() => onLanguageChange(language === 'en' ? 'fr' : 'en')}
-              className="text-white/80 font-bold text-xs flex items-center gap-1"
+              className="text-white/80 font-bold text-xs flex items-center gap-1 bg-white/10 px-3 py-1 rounded-full"
             >
               <Globe size={14}/> {language.toUpperCase()}
             </button>

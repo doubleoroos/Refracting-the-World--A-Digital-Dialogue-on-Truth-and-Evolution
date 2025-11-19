@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Section, Language } from '../types';
 import { CONTENT } from '../constants';
-import { CheckCircle, Globe, Leaf, Users, Calendar, TrendingUp, Flag, ChevronLeft, ChevronRight, Sparkles, Loader2, Image as ImageIcon, X } from 'lucide-react';
+import { CheckCircle, Globe, Leaf, Users, Calendar, TrendingUp, Flag, ChevronLeft, ChevronRight, Sparkles, Loader2, Image as ImageIcon, X, AlertCircle } from 'lucide-react';
 import { summarizeManifesto, generateThematicImage } from '../services/geminiService';
 
 interface ManifestoProps {
@@ -18,6 +18,7 @@ const Manifesto: React.FC<ManifestoProps> = ({ language }) => {
   const [imagePrompt, setImagePrompt] = useState('');
   const [generatedManifestoImage, setGeneratedManifestoImage] = useState<string | null>(null);
   const [isGeneratingImage, setIsGeneratingImage] = useState(false);
+  const [imageError, setImageError] = useState(false);
 
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % content.carousel.items.length);
@@ -43,8 +44,16 @@ const Manifesto: React.FC<ManifestoProps> = ({ language }) => {
   const handleGenerateImage = async () => {
     if (!imagePrompt) return;
     setIsGeneratingImage(true);
+    setImageError(false);
+    setGeneratedManifestoImage(null);
+    
     const result = await generateThematicImage(imagePrompt);
-    setGeneratedManifestoImage(result);
+    
+    if (result) {
+        setGeneratedManifestoImage(result);
+    } else {
+        setImageError(true);
+    }
     setIsGeneratingImage(false);
   };
 
@@ -62,7 +71,7 @@ const Manifesto: React.FC<ManifestoProps> = ({ language }) => {
 
         {/* Strategic Alignment Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-24">
-          <div className="bg-white p-6 rounded-sm shadow-sm border border-black/5">
+          <div className="bg-white p-6 rounded-sm shadow-sm border border-black/5 hover:border-accent/30 transition-colors">
             <div className="w-10 h-10 bg-accent/10 flex items-center justify-center rounded-full mb-4">
               <Users className="text-accent" size={20} />
             </div>
@@ -72,7 +81,7 @@ const Manifesto: React.FC<ManifestoProps> = ({ language }) => {
             </p>
           </div>
 
-          <div className="bg-white p-6 rounded-sm shadow-sm border border-black/5">
+          <div className="bg-white p-6 rounded-sm shadow-sm border border-black/5 hover:border-accent/30 transition-colors">
             <div className="w-10 h-10 bg-accent/10 flex items-center justify-center rounded-full mb-4">
               <Leaf className="text-accent" size={20} />
             </div>
@@ -82,7 +91,7 @@ const Manifesto: React.FC<ManifestoProps> = ({ language }) => {
             </p>
           </div>
 
-          <div className="bg-white p-6 rounded-sm shadow-sm border border-black/5">
+          <div className="bg-white p-6 rounded-sm shadow-sm border border-black/5 hover:border-accent/30 transition-colors">
             <div className="w-10 h-10 bg-accent/10 flex items-center justify-center rounded-full mb-4">
               <Globe className="text-accent" size={20} />
             </div>
@@ -92,7 +101,7 @@ const Manifesto: React.FC<ManifestoProps> = ({ language }) => {
             </p>
           </div>
 
-          <div className="bg-white p-6 rounded-sm shadow-sm border border-black/5">
+          <div className="bg-white p-6 rounded-sm shadow-sm border border-black/5 hover:border-accent/30 transition-colors">
             <div className="w-10 h-10 bg-accent/10 flex items-center justify-center rounded-full mb-4">
               <CheckCircle className="text-accent" size={20} />
             </div>
@@ -104,71 +113,85 @@ const Manifesto: React.FC<ManifestoProps> = ({ language }) => {
         </div>
 
         {/* Executive Summary Section (AI) */}
-        <div className="max-w-3xl mx-auto mb-24 text-center">
-          {!summary && (
-            <button 
-              onClick={handleSummarize}
-              disabled={isSummarizing}
-              className="inline-flex items-center gap-2 bg-void text-white px-8 py-3 rounded-full hover:bg-accent transition-colors disabled:opacity-50"
-            >
-              {isSummarizing ? <Loader2 size={16} className="animate-spin"/> : <Sparkles size={16} />}
-              <span className="text-xs uppercase tracking-widest font-bold">
-                {isSummarizing ? content.summary.loading : content.summary.button}
-              </span>
-            </button>
-          )}
-
-          {summary && (
-            <div className="bg-white p-8 rounded-sm shadow-sm border border-black/5 animate-fadeIn text-left">
-              <div className="flex items-center gap-2 mb-4">
-                <Sparkles size={16} className="text-accent" />
-                <h4 className="text-xs font-bold uppercase tracking-widest text-void/40">{content.summary.title}</h4>
+        <div className="max-w-3xl mx-auto mb-24">
+          <div className="text-center mb-8">
+            {!summary ? (
+              <button 
+                onClick={handleSummarize}
+                disabled={isSummarizing}
+                className="group inline-flex items-center gap-3 bg-void text-white px-8 py-4 rounded-full hover:bg-accent transition-all duration-300 disabled:opacity-50 hover:scale-105 shadow-lg"
+              >
+                {isSummarizing ? <Loader2 size={18} className="animate-spin"/> : <Sparkles size={18} className="group-hover:animate-pulse"/>}
+                <span className="text-xs uppercase tracking-widest font-bold">
+                  {isSummarizing ? content.summary.loading : content.summary.button}
+                </span>
+              </button>
+            ) : (
+              <div className="bg-gradient-to-br from-white to-accent/5 p-10 rounded-sm shadow-md border border-accent/20 animate-fadeIn text-left relative overflow-hidden">
+                <div className="absolute top-0 right-0 p-4 opacity-10 pointer-events-none">
+                   <Sparkles size={120} className="text-accent"/>
+                </div>
+                <div className="flex items-center gap-3 mb-6 border-b border-accent/10 pb-4">
+                  <Sparkles size={18} className="text-accent" />
+                  <h4 className="text-xs font-bold uppercase tracking-widest text-void/40">{content.summary.title}</h4>
+                </div>
+                <p className="text-xl font-serif italic leading-relaxed text-void/90 relative z-10">
+                  "{summary}"
+                </p>
               </div>
-              <p className="text-lg font-serif italic leading-relaxed text-void/80">
-                "{summary}"
-              </p>
-            </div>
-          )}
+            )}
+          </div>
         </div>
 
-        {/* NEW: Image Generation Section */}
-        <div className="max-w-3xl mx-auto mb-24 bg-white p-8 rounded-sm shadow-sm border border-black/5">
-            <div className="text-center mb-6">
-                <h4 className="text-xl font-serif italic mb-2">{content.imageGen.title}</h4>
+        {/* Image Generation Section */}
+        <div className="max-w-3xl mx-auto mb-24 bg-white p-8 md:p-10 rounded-sm shadow-lg border border-black/5 relative overflow-hidden">
+            <div className="absolute top-0 left-0 w-1 h-full bg-accent"></div>
+            
+            <div className="text-center mb-8">
+                <h4 className="text-2xl font-serif italic mb-3">{content.imageGen.title}</h4>
                 <p className="text-xs text-void/60 uppercase tracking-widest">{content.imageGen.subtitle}</p>
             </div>
 
-            <div className="flex flex-col gap-4 relative">
-                <div className="flex gap-2">
+            <div className="flex flex-col gap-6 relative">
+                <div className="flex flex-col md:flex-row gap-3">
                     <input 
                         type="text" 
                         value={imagePrompt}
                         onChange={(e) => setImagePrompt(e.target.value)}
                         placeholder={content.imageGen.placeholder}
-                        className="flex-1 bg-paper border border-black/10 px-4 py-3 rounded-sm text-sm focus:outline-none focus:border-accent transition-colors"
+                        disabled={isGeneratingImage}
+                        className="flex-1 bg-paper border border-black/10 px-6 py-4 rounded-sm text-sm focus:outline-none focus:border-accent transition-colors disabled:opacity-50"
                         onKeyDown={(e) => e.key === 'Enter' && handleGenerateImage()}
                     />
                     <button
                         onClick={handleGenerateImage}
                         disabled={isGeneratingImage || !imagePrompt}
-                        className="bg-void text-white px-6 py-3 rounded-sm hover:bg-accent transition-colors disabled:opacity-50 flex items-center gap-2"
+                        className="bg-void text-white px-8 py-4 rounded-sm hover:bg-accent transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 min-w-[160px]"
                     >
-                        {isGeneratingImage ? <Loader2 size={16} className="animate-spin" /> : <ImageIcon size={16} />}
-                        <span className="text-xs font-bold uppercase tracking-widest hidden md:inline">{content.imageGen.button}</span>
+                        {isGeneratingImage ? <Loader2 size={18} className="animate-spin" /> : <ImageIcon size={18} />}
+                        <span className="text-xs font-bold uppercase tracking-widest">{content.imageGen.button}</span>
                     </button>
                 </div>
 
+                {imageError && (
+                    <div className="flex items-center gap-2 text-accent text-xs animate-fadeIn justify-center bg-accent/5 p-3 rounded-sm">
+                        <AlertCircle size={14} />
+                        <span>Generation failed. Please try a different prompt.</span>
+                    </div>
+                )}
+
                 {generatedManifestoImage && (
-                    <div className="relative mt-4 aspect-video bg-black/5 rounded-sm overflow-hidden animate-fadeIn group">
+                    <div className="relative mt-4 aspect-video bg-black/5 rounded-sm overflow-hidden animate-fadeIn group shadow-inner border border-black/10">
                         <img src={generatedManifestoImage} alt="Generated Vision" className="w-full h-full object-cover" />
                         <button 
                             onClick={() => setGeneratedManifestoImage(null)}
-                            className="absolute top-4 right-4 w-8 h-8 bg-black/50 backdrop-blur text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-accent"
+                            className="absolute top-4 right-4 w-8 h-8 bg-black/50 backdrop-blur text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all hover:bg-accent hover:scale-110"
                         >
                             <X size={16} />
                         </button>
-                         <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent text-white opacity-0 group-hover:opacity-100 transition-opacity">
-                            <p className="text-xs font-serif italic">"{imagePrompt}"</p>
+                         <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/90 via-black/50 to-transparent text-white translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                            <span className="text-[10px] uppercase tracking-widest text-accent mb-1 block">Prompt</span>
+                            <p className="text-sm font-serif italic opacity-90">"{imagePrompt}"</p>
                         </div>
                     </div>
                 )}
@@ -197,17 +220,17 @@ const Manifesto: React.FC<ManifestoProps> = ({ language }) => {
              {/* Controls */}
              <button 
                onClick={prevSlide}
-               className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/10 backdrop-blur hover:bg-accent text-white flex items-center justify-center transition-all opacity-0 group-hover:opacity-100"
+               className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 backdrop-blur hover:bg-accent text-white flex items-center justify-center transition-all opacity-0 group-hover:opacity-100 hover:scale-110"
                aria-label="Previous slide"
              >
-               <ChevronLeft size={20} />
+               <ChevronLeft size={24} />
              </button>
              <button 
                onClick={nextSlide}
-               className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/10 backdrop-blur hover:bg-accent text-white flex items-center justify-center transition-all opacity-0 group-hover:opacity-100"
+               className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 backdrop-blur hover:bg-accent text-white flex items-center justify-center transition-all opacity-0 group-hover:opacity-100 hover:scale-110"
                aria-label="Next slide"
              >
-               <ChevronRight size={20} />
+               <ChevronRight size={24} />
              </button>
 
              {/* Indicators */}
@@ -215,7 +238,7 @@ const Manifesto: React.FC<ManifestoProps> = ({ language }) => {
                {content.carousel.items.map((_, idx) => (
                  <div 
                     key={idx} 
-                    className={`w-1.5 h-1.5 rounded-full transition-all ${idx === currentSlide ? 'bg-accent w-4' : 'bg-white/50'}`}
+                    className={`h-1 rounded-full transition-all ${idx === currentSlide ? 'bg-accent w-8' : 'bg-white/50 w-2'}`}
                  ></div>
                ))}
              </div>
@@ -233,8 +256,8 @@ const Manifesto: React.FC<ManifestoProps> = ({ language }) => {
             </h4>
             <div className="space-y-8 border-l-2 border-black/10 pl-8 relative">
               {content.timeline.phases.map((item, i) => (
-                <div key={i} className="relative">
-                   <div className={`absolute -left-[41px] w-5 h-5 rounded-full border-4 border-paper ${item.current ? 'bg-accent' : 'bg-void/20'}`}></div>
+                <div key={i} className="relative group">
+                   <div className={`absolute -left-[41px] w-5 h-5 rounded-full border-4 border-paper transition-colors ${item.current ? 'bg-accent scale-125' : 'bg-void/20 group-hover:bg-void/40'}`}></div>
                    <span className="text-xs font-bold uppercase tracking-widest text-accent block mb-1">{item.phase}: {item.dates}</span>
                    <h5 className="text-lg font-bold mb-1">{item.title}</h5>
                    <p className="text-sm text-void/60">{item.desc}</p>
@@ -249,7 +272,7 @@ const Manifesto: React.FC<ManifestoProps> = ({ language }) => {
               <TrendingUp className="text-accent" size={24} /> {content.budget.title}
             </h4>
             
-            <div className="bg-white p-8 rounded-sm border border-black/5 shadow-sm mb-8">
+            <div className="bg-white p-8 rounded-sm border border-black/5 shadow-sm mb-8 hover:shadow-md transition-shadow">
               <h5 className="text-xs font-bold uppercase tracking-widest mb-6 text-void/40">{content.budget.allocationTitle}</h5>
               <ul className="space-y-4">
                 {content.budget.items.map((expense, i) => (
@@ -261,7 +284,7 @@ const Manifesto: React.FC<ManifestoProps> = ({ language }) => {
               </ul>
             </div>
 
-             <div className="bg-void/5 p-8 rounded-sm border border-black/5">
+             <div className="bg-void/5 p-8 rounded-sm border border-black/5 hover:bg-void/10 transition-colors">
               <h5 className="text-xs font-bold uppercase tracking-widest mb-6 text-void/40">{content.budget.incomeTitle}</h5>
                <ul className="space-y-4">
                 {content.budget.income.map((inc, i) => (
