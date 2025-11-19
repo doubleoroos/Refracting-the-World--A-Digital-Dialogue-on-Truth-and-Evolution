@@ -1,0 +1,84 @@
+import React, { useState, useEffect } from 'react';
+import { NavItem, Section } from '../types';
+import { NAV_ITEMS } from '../constants';
+import { Menu, X } from 'lucide-react';
+
+interface NavigationProps {
+  activeSection: Section;
+  onNavigate: (section: Section) => void;
+}
+
+const Navigation: React.FC<NavigationProps> = ({ activeSection, onNavigate }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const handleNavClick = (id: Section) => {
+    onNavigate(id);
+    setIsOpen(false);
+  };
+
+  return (
+    <nav 
+      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 border-b border-white/10 ${
+        scrolled ? 'bg-void/90 backdrop-blur-md py-4' : 'bg-transparent py-6'
+      }`}
+    >
+      <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
+        <div 
+          className="font-serif text-xl tracking-widest cursor-pointer z-50"
+          onClick={() => handleNavClick(Section.HERO)}
+        >
+          REFRACTING <span className="text-white/50">THE WORLD</span>
+        </div>
+
+        {/* Desktop Nav */}
+        <div className="hidden md:flex gap-8">
+          {NAV_ITEMS.map((item) => (
+            <button
+              key={item.id}
+              onClick={() => handleNavClick(item.id)}
+              className={`text-sm uppercase tracking-widest transition-colors hover:text-white ${
+                activeSection === item.id ? 'text-white border-b border-accent' : 'text-white/60'
+              }`}
+            >
+              {item.label}
+            </button>
+          ))}
+        </div>
+
+        {/* Mobile Menu Button */}
+        <button 
+          className="md:hidden text-white z-50"
+          onClick={() => setIsOpen(!isOpen)}
+        >
+          {isOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
+
+        {/* Mobile Nav Overlay */}
+        <div className={`fixed inset-0 bg-void flex flex-col justify-center items-center gap-8 transition-transform duration-500 md:hidden ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+           {NAV_ITEMS.map((item) => (
+            <button
+              key={item.id}
+              onClick={() => handleNavClick(item.id)}
+              className={`text-2xl font-serif italic transition-colors ${
+                activeSection === item.id ? 'text-accent' : 'text-white/80'
+              }`}
+            >
+              {item.label}
+            </button>
+          ))}
+        </div>
+      </div>
+    </nav>
+  );
+};
+
+export default Navigation;
