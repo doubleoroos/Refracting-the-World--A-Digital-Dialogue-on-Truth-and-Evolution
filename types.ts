@@ -82,6 +82,11 @@ export interface Content {
   manifesto: {
     tag: string;
     title: React.ReactNode;
+    summary: {
+      button: string;
+      loading: string;
+      title: string;
+    };
     cards: {
       pool: { title: string; desc: string };
       eco: { title: string; desc: string };

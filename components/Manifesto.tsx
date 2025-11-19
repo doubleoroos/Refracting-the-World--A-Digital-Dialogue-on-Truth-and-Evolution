@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Section, Language } from '../types';
 import { CONTENT } from '../constants';
-import { CheckCircle, Globe, Leaf, Users, Calendar, TrendingUp, Flag, ChevronLeft, ChevronRight } from 'lucide-react';
+import { CheckCircle, Globe, Leaf, Users, Calendar, TrendingUp, Flag, ChevronLeft, ChevronRight, Sparkles, Loader2 } from 'lucide-react';
+import { summarizeManifesto } from '../services/geminiService';
 
 interface ManifestoProps {
   language: Language;
@@ -10,6 +11,8 @@ interface ManifestoProps {
 const Manifesto: React.FC<ManifestoProps> = ({ language }) => {
   const content = CONTENT[language].manifesto;
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [summary, setSummary] = useState<string | null>(null);
+  const [isSummarizing, setIsSummarizing] = useState(false);
 
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % content.carousel.items.length);
@@ -17,6 +20,19 @@ const Manifesto: React.FC<ManifestoProps> = ({ language }) => {
 
   const prevSlide = () => {
     setCurrentSlide((prev) => (prev - 1 + content.carousel.items.length) % content.carousel.items.length);
+  };
+
+  const handleSummarize = async () => {
+    setIsSummarizing(true);
+    const points = [
+      `${content.cards.pool.title}: ${content.cards.pool.desc}`,
+      `${content.cards.eco.title}: ${content.cards.eco.desc}`,
+      `${content.cards.access.title}: ${content.cards.access.desc}`,
+      `${content.cards.fair.title}: ${content.cards.fair.desc}`
+    ];
+    const result = await summarizeManifesto(points, language);
+    setSummary(result);
+    setIsSummarizing(false);
   };
 
   return (
@@ -72,6 +88,34 @@ const Manifesto: React.FC<ManifestoProps> = ({ language }) => {
               {content.cards.fair.desc}
             </p>
           </div>
+        </div>
+
+        {/* Executive Summary Section (AI) */}
+        <div className="max-w-3xl mx-auto mb-24 text-center">
+          {!summary && (
+            <button 
+              onClick={handleSummarize}
+              disabled={isSummarizing}
+              className="inline-flex items-center gap-2 bg-void text-white px-8 py-3 rounded-full hover:bg-accent transition-colors disabled:opacity-50"
+            >
+              {isSummarizing ? <Loader2 size={16} className="animate-spin"/> : <Sparkles size={16} />}
+              <span className="text-xs uppercase tracking-widest font-bold">
+                {isSummarizing ? content.summary.loading : content.summary.button}
+              </span>
+            </button>
+          )}
+
+          {summary && (
+            <div className="bg-white p-8 rounded-sm shadow-sm border border-black/5 animate-fadeIn text-left">
+              <div className="flex items-center gap-2 mb-4">
+                <Sparkles size={16} className="text-accent" />
+                <h4 className="text-xs font-bold uppercase tracking-widest text-void/40">{content.summary.title}</h4>
+              </div>
+              <p className="text-lg font-serif italic leading-relaxed text-void/80">
+                "{summary}"
+              </p>
+            </div>
+          )}
         </div>
 
         {/* Key Works Carousel */}

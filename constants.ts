@@ -127,6 +127,11 @@ export const CONTENT: Record<Language, Content> = {
     manifesto: {
       tag: 'Strategic Alignment & Roadmap',
       title: React.createElement(React.Fragment, null, "A framework for ", React.createElement("span", { className: "italic text-accent" }, "impact & viability"), "."),
+      summary: {
+        button: 'Generate Executive Summary',
+        loading: 'Synthesizing Strategy...',
+        title: 'Executive Summary'
+      },
       cards: {
         pool: { title: 'Resource Pooling', desc: 'Consolidating efforts of independent artists into one high-impact platform to minimize administrative overhead.' },
         eco: { title: 'Eco-Responsibility', desc: '"Zero Waste" by design. Green hosting. A carbon-neutral alternative to physical festivals.' },
@@ -264,6 +269,11 @@ export const CONTENT: Record<Language, Content> = {
     manifesto: {
       tag: 'Alignement Stratégique et Feuille de Route',
       title: React.createElement(React.Fragment, null, "Un cadre pour ", React.createElement("span", { className: "italic text-accent" }, "l'impact et la viabilité"), "."),
+      summary: {
+        button: 'Générer le Résumé Exécutif',
+        loading: 'Synthèse de la Stratégie...',
+        title: 'Résumé Exécutif'
+      },
       cards: {
         pool: { title: 'Mutualisation', desc: 'Consolider les efforts d\'artistes indépendants en une plateforme à fort impact pour minimiser les frais administratifs.' },
         eco: { title: 'Éco-Responsabilité', desc: '"Zéro Déchet" par conception. Hébergement vert. Une alternative neutre en carbone aux festivals physiques.' },

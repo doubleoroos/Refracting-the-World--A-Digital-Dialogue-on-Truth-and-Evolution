@@ -77,3 +77,28 @@ export const generateThematicImage = async (prompt: string): Promise<string | nu
     return null;
   }
 };
+
+export const summarizeManifesto = async (manifestoPoints: string[], language: Language): Promise<string> => {
+  try {
+    const ai = getClient();
+    const prompt = `
+      You are a strategic consultant for a cultural non-profit.
+      Summarize the following strategic pillars of a photography project into a single, compelling, professional paragraph.
+      
+      Pillars:
+      ${manifestoPoints.join('\n')}
+      
+      Tone: Professional, visionary, concise.
+      IMPORTANT: Provide the response in ${language === 'fr' ? 'French' : 'English'}.
+    `;
+    
+    const response = await ai.models.generateContent({
+      model: 'gemini-2.5-flash',
+      contents: prompt,
+    });
+    return response.text || "Summary generation failed.";
+  } catch (error) {
+    console.error("Gemini Summary Error:", error);
+    return language === 'fr' ? "Impossible de générer le résumé." : "Unable to generate summary.";
+  }
+};

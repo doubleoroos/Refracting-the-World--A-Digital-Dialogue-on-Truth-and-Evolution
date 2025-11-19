@@ -34,7 +34,7 @@ const Hero: React.FC<HeroProps> = ({ language }) => {
             </span>
         </div>
 
-        <h1 className="font-serif text-5xl md:text-7xl lg:text-8xl mb-6 leading-tight mix-blend-screen">
+        <h1 className="font-serif text-5xl md:text-7xl lg:text-8xl mb-6 leading-tight drop-shadow-lg">
           {content.title.split(' ').slice(0, 1)}<br/>
           <span className="italic text-white/80">{content.title.split(' ').slice(1).join(' ')}</span>
         </h1>
