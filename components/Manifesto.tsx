@@ -85,7 +85,7 @@ const Manifesto: React.FC<ManifestoProps> = ({ language }) => {
                   key={index} 
                   className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${index === currentSlide ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
                >
-                  <img src={item.image} alt={item.caption} className="w-full h-full object-cover opacity-80 group-hover:opacity-60 transition-opacity duration-500" />
+                  <img src={item.image} alt={item.altText} className="w-full h-full object-cover opacity-80 group-hover:opacity-60 transition-opacity duration-500" />
                   <div className="absolute bottom-0 left-0 right-0 p-8 bg-gradient-to-t from-black/80 to-transparent text-white">
                     <h5 className="text-2xl font-serif italic mb-1">{item.caption}</h5>
                     <p className="text-xs uppercase tracking-widest text-accent">{item.artist}</p>
@@ -97,12 +97,14 @@ const Manifesto: React.FC<ManifestoProps> = ({ language }) => {
              <button 
                onClick={prevSlide}
                className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/10 backdrop-blur hover:bg-accent text-white flex items-center justify-center transition-all opacity-0 group-hover:opacity-100"
+               aria-label="Previous slide"
              >
                <ChevronLeft size={20} />
              </button>
              <button 
                onClick={nextSlide}
                className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/10 backdrop-blur hover:bg-accent text-white flex items-center justify-center transition-all opacity-0 group-hover:opacity-100"
+               aria-label="Next slide"
              >
                <ChevronRight size={20} />
              </button>

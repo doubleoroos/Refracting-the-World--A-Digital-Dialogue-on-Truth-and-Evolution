@@ -53,3 +53,27 @@ export const explainTechnique = async (topic: string, language: Language): Promi
     return language === 'fr' ? "Impossible de récupérer le contexte historique pour le moment." : "Unable to retrieve historical context at this moment.";
   }
 };
+
+export const generateThematicImage = async (prompt: string): Promise<string | null> => {
+  try {
+    const ai = getClient();
+    const response = await ai.models.generateImages({
+      model: 'imagen-4.0-generate-001',
+      prompt: prompt,
+      config: {
+        numberOfImages: 1,
+        outputMimeType: 'image/jpeg',
+        aspectRatio: '16:9',
+      },
+    });
+
+    const base64ImageBytes = response.generatedImages?.[0]?.image?.imageBytes;
+    if (base64ImageBytes) {
+      return `data:image/jpeg;base64,${base64ImageBytes}`;
+    }
+    return null;
+  } catch (error) {
+    console.error("Gemini Image Gen Error:", error);
+    return null;
+  }
+};

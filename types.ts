@@ -27,6 +27,7 @@ export interface CarouselItem {
   image: string;
   caption: string;
   artist: string;
+  altText: string;
 }
 
 export interface Content {
@@ -49,6 +50,8 @@ export interface Content {
       aiButton: string;
       aiButtonActive: string;
       aiPrompt: string;
+      visualizeButton: string;
+      visualizeLoading: string;
     }
   };
   pillarB: {

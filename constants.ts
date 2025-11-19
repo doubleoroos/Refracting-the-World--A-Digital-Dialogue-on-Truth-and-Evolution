@@ -89,7 +89,9 @@ export const CONTENT: Record<Language, Content> = {
         processed: 'Artistic Truth',
         aiButton: 'Interrogate the Medium',
         aiButtonActive: 'Analysis Complete',
-        aiPrompt: 'Ask AI: Does the lens capture reality, or create it?'
+        aiPrompt: 'Ask AI: Does the lens capture reality, or create it?',
+        visualizeButton: 'Visualize Synthesis',
+        visualizeLoading: 'Generating Vision...'
       }
     },
     pillarB: {
@@ -137,22 +139,26 @@ export const CONTENT: Record<Language, Content> = {
           {
             image: 'https://picsum.photos/id/56/1200/800',
             caption: 'Geometric Silence',
-            artist: 'Ronald Tilleman'
+            artist: 'Ronald Tilleman',
+            altText: 'Black and white architectural photograph emphasizing sharp geometric angles and deep contrast.'
           },
           {
              image: 'https://picsum.photos/id/122/1200/800',
              caption: 'Urban Distortion',
-             artist: 'Mike Pasarella'
+             artist: 'Mike Pasarella',
+             altText: 'Abstract urban photography featuring blurred city lights and distorted vertical structures.'
           },
           {
             image: 'https://picsum.photos/id/203/1200/800',
             caption: 'The Human Condition',
-            artist: 'Prakash Kumararajan'
+            artist: 'Prakash Kumararajan',
+            altText: 'Close-up black and white portrait revealing detailed textures and emotional expression of the human face.'
           },
           {
             image: 'https://picsum.photos/id/338/1200/800',
             caption: 'Echoes of History',
-            artist: 'Roos van der Jagt'
+            artist: 'Roos van der Jagt',
+            altText: 'Atmospheric composition blending historical architecture with modern digital overlays and lighting.'
           }
         ]
       },
@@ -220,7 +226,9 @@ export const CONTENT: Record<Language, Content> = {
         processed: 'Vérité Artistique',
         aiButton: 'Interroger le Médium',
         aiButtonActive: 'Analyse Terminée',
-        aiPrompt: 'IA: L\'objectif capture-t-il la réalité ou la crée-t-il ?'
+        aiPrompt: 'IA: L\'objectif capture-t-il la réalité ou la crée-t-il ?',
+        visualizeButton: 'Visualiser la Synthèse',
+        visualizeLoading: 'Rêve en cours...'
       }
     },
     pillarB: {
@@ -268,22 +276,26 @@ export const CONTENT: Record<Language, Content> = {
           {
             image: 'https://picsum.photos/id/56/1200/800',
             caption: 'Silence Géométrique',
-            artist: 'Ronald Tilleman'
+            artist: 'Ronald Tilleman',
+            altText: 'Photographie architecturale en noir et blanc mettant l\'accent sur des angles géométriques nets et le contraste.'
           },
           {
              image: 'https://picsum.photos/id/122/1200/800',
              caption: 'Distorsion Urbaine',
-             artist: 'Mike Pasarella'
+             artist: 'Mike Pasarella',
+             altText: 'Photographie urbaine abstraite mettant en vedette des lumières de ville floues et des structures déformées.'
           },
           {
             image: 'https://picsum.photos/id/203/1200/800',
             caption: 'La Condition Humaine',
-            artist: 'Prakash Kumararajan'
+            artist: 'Prakash Kumararajan',
+            altText: 'Portrait noir et blanc en gros plan révélant les textures détaillées et l\'expression émotionnelle du visage humain.'
           },
           {
             image: 'https://picsum.photos/id/338/1200/800',
             caption: 'Échos de l\'Histoire',
-            artist: 'Roos van der Jagt'
+            artist: 'Roos van der Jagt',
+            altText: 'Composition atmosphérique mélangeant architecture historique et superpositions numériques modernes.'
           }
         ]
       },
