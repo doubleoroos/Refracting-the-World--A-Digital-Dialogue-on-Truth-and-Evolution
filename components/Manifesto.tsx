@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Section, Language } from '../types';
 import { CONTENT } from '../constants';
-import { CheckCircle, Globe, Leaf, Users, Calendar, TrendingUp, Flag, ChevronLeft, ChevronRight, Sparkles, Loader2, Image as ImageIcon, X, AlertCircle, Video } from 'lucide-react';
+import { CheckCircle, Globe, Leaf, Users, Calendar, TrendingUp, Flag, Sparkles, Loader2, Image as ImageIcon, X, Video, Wand2 } from 'lucide-react';
 import { summarizeManifesto, generateThematicImage, generateManifestoVideo } from '../services/geminiService';
 
 // Local interface for casting to avoid global namespace pollution/conflicts
@@ -14,9 +14,19 @@ interface ManifestoProps {
   language: Language;
 }
 
+// Internal Tooltip Component for Micro-interactions
+const Tooltip: React.FC<{ text: string; children: React.ReactNode }> = ({ text, children }) => (
+  <div className="relative group flex items-center justify-center cursor-help">
+    {children}
+    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 px-3 py-1.5 bg-black/90 backdrop-blur-md border border-white/20 text-white text-[9px] font-bold uppercase tracking-[0.2em] whitespace-nowrap rounded-sm opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 pointer-events-none z-50 shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
+      {text}
+      <div className="absolute top-full left-1/2 -translate-x-1/2 -mt-[1px] border-4 border-transparent border-t-white/20"></div>
+    </div>
+  </div>
+);
+
 const Manifesto: React.FC<ManifestoProps> = ({ language }) => {
   const content = CONTENT[language].manifesto;
-  const [currentSlide, setCurrentSlide] = useState(0);
   const [summary, setSummary] = useState<string | null>(null);
   const [isSummarizing, setIsSummarizing] = useState(false);
   
@@ -30,14 +40,6 @@ const Manifesto: React.FC<ManifestoProps> = ({ language }) => {
   const [isGeneratingVideo, setIsGeneratingVideo] = useState(false);
   const [generatedVideoUrl, setGeneratedVideoUrl] = useState<string | null>(null);
   const [videoError, setVideoError] = useState(false);
-
-  const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % content.carousel.items.length);
-  };
-
-  const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + content.carousel.items.length) % content.carousel.items.length);
-  };
 
   const handleSummarize = async () => {
     setIsSummarizing(true);
@@ -101,84 +103,79 @@ const Manifesto: React.FC<ManifestoProps> = ({ language }) => {
   };
 
   return (
-    <section id={Section.MANIFESTO} className="py-24 px-6 bg-paper text-void">
-      <div className="max-w-6xl mx-auto">
+    <section id={Section.MANIFESTO} className="py-24 px-6 bg-paper text-void relative">
+      <div className="max-w-7xl mx-auto">
         
         {/* Header */}
         <div className="mb-20 text-center">
-          <h2 className="text-xs font-bold tracking-widest uppercase text-accent mb-4">{content.tag}</h2>
-          <h3 className="text-3xl md:text-5xl font-serif mb-8 leading-tight">
+          <div className="flex items-center justify-center gap-2 mb-4">
+             <div className="w-8 h-px bg-accent"></div>
+             <h2 className="text-xs font-bold tracking-[0.3em] uppercase text-accent">{content.tag}</h2>
+             <div className="w-8 h-px bg-accent"></div>
+          </div>
+          <h3 className="text-4xl md:text-6xl font-serif mb-6 leading-tight">
             {content.title}
           </h3>
         </div>
 
         {/* Strategic Alignment Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-24">
-          <div className="bg-white p-6 rounded-sm shadow-sm border border-black/5 hover:border-accent/30 transition-colors">
-            <div className="w-10 h-10 bg-accent/10 flex items-center justify-center rounded-full mb-4">
-              <Users className="text-accent" size={20} />
+          {[
+            { icon: Users, data: content.cards.pool },
+            { icon: Leaf, data: content.cards.eco },
+            { icon: Globe, data: content.cards.access },
+            { icon: CheckCircle, data: content.cards.fair }
+          ].map((item, idx) => (
+            <div key={idx} className="bg-white p-8 rounded-sm shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-black/5 hover:border-accent/30 transition-all hover:-translate-y-1">
+              <div className="w-12 h-12 bg-accent/5 flex items-center justify-center rounded-full mb-6 border border-accent/10">
+                <item.icon className="text-accent" size={20} />
+              </div>
+              <h4 className="text-sm font-bold uppercase tracking-wide mb-3">{item.data.title}</h4>
+              <p className="text-sm text-void/60 leading-relaxed font-serif">
+                {item.data.desc}
+              </p>
             </div>
-            <h4 className="text-base font-bold mb-2">{content.cards.pool.title}</h4>
-            <p className="text-xs text-void/70 leading-relaxed">
-              {content.cards.pool.desc}
-            </p>
-          </div>
-
-          <div className="bg-white p-6 rounded-sm shadow-sm border border-black/5 hover:border-accent/30 transition-colors">
-            <div className="w-10 h-10 bg-accent/10 flex items-center justify-center rounded-full mb-4">
-              <Leaf className="text-accent" size={20} />
-            </div>
-            <h4 className="text-base font-bold mb-2">{content.cards.eco.title}</h4>
-            <p className="text-xs text-void/70 leading-relaxed">
-              {content.cards.eco.desc}
-            </p>
-          </div>
-
-          <div className="bg-white p-6 rounded-sm shadow-sm border border-black/5 hover:border-accent/30 transition-colors">
-            <div className="w-10 h-10 bg-accent/10 flex items-center justify-center rounded-full mb-4">
-              <Globe className="text-accent" size={20} />
-            </div>
-            <h4 className="text-base font-bold mb-2">{content.cards.access.title}</h4>
-            <p className="text-xs text-void/70 leading-relaxed">
-              {content.cards.access.desc}
-            </p>
-          </div>
-
-          <div className="bg-white p-6 rounded-sm shadow-sm border border-black/5 hover:border-accent/30 transition-colors">
-            <div className="w-10 h-10 bg-accent/10 flex items-center justify-center rounded-full mb-4">
-              <CheckCircle className="text-accent" size={20} />
-            </div>
-            <h4 className="text-base font-bold mb-2">{content.cards.fair.title}</h4>
-            <p className="text-xs text-void/70 leading-relaxed">
-              {content.cards.fair.desc}
-            </p>
-          </div>
+          ))}
         </div>
 
         {/* Executive Summary Section (AI) */}
-        <div className="max-w-3xl mx-auto mb-24">
-          <div className="text-center mb-8">
+        <div className="max-w-4xl mx-auto mb-32">
+          <div className="relative">
+             <div className="absolute inset-0 flex items-center" aria-hidden="true">
+               <div className="w-full border-t border-black/5"></div>
+             </div>
+             <div className="relative flex justify-center">
+               <span className="bg-paper px-4 text-xs uppercase tracking-widest text-void/40">AI Strategic Synthesis</span>
+             </div>
+           </div>
+
+          <div className="mt-8 text-center">
             {!summary ? (
               <button 
                 onClick={handleSummarize}
                 disabled={isSummarizing}
-                className="group inline-flex items-center gap-3 bg-void text-white px-8 py-4 rounded-full hover:bg-accent transition-all duration-300 disabled:opacity-50 hover:scale-105 shadow-lg"
+                className="group relative inline-flex items-center gap-3 bg-void text-white px-10 py-5 rounded-sm hover:bg-accent transition-all duration-300 disabled:opacity-50 hover:shadow-xl overflow-hidden"
               >
-                {isSummarizing ? <Loader2 size={18} className="animate-spin"/> : <Sparkles size={18} className="group-hover:animate-pulse"/>}
-                <span className="text-xs uppercase tracking-widest font-bold">
+                <div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+                {isSummarizing ? <Loader2 size={18} className="animate-spin"/> : <Sparkles size={18} />}
+                <span className="text-xs uppercase tracking-widest font-bold relative z-10">
                   {isSummarizing ? content.summary.loading : content.summary.button}
                 </span>
               </button>
             ) : (
-              <div className="bg-gradient-to-br from-white to-accent/5 p-10 rounded-sm shadow-md border border-accent/20 animate-fadeIn text-left relative overflow-hidden">
-                <div className="absolute top-0 right-0 p-4 opacity-10 pointer-events-none">
-                   <Sparkles size={120} className="text-accent"/>
+              <div className="bg-gradient-to-br from-white to-white/50 p-12 rounded-sm shadow-xl border border-black/5 animate-fadeIn text-left relative overflow-hidden">
+                <div className="absolute -right-10 -top-10 text-accent/5">
+                   <Sparkles size={200} />
                 </div>
-                <div className="flex items-center gap-3 mb-6 border-b border-accent/10 pb-4">
-                  <Sparkles size={18} className="text-accent" />
+                <div className="flex items-center gap-3 mb-8 border-b border-accent/10 pb-4">
+                  <Tooltip text="Gemini Pro Analysis">
+                    <div className="w-8 h-8 rounded-full bg-accent text-white flex items-center justify-center">
+                      <Sparkles size={14} />
+                    </div>
+                  </Tooltip>
                   <h4 className="text-xs font-bold uppercase tracking-widest text-void/40">{content.summary.title}</h4>
                 </div>
-                <p className="text-xl font-serif italic leading-relaxed text-void/90 relative z-10">
+                <p className="text-2xl font-serif italic leading-relaxed text-void/80 relative z-10">
                   "{summary}"
                 </p>
               </div>
@@ -186,180 +183,139 @@ const Manifesto: React.FC<ManifestoProps> = ({ language }) => {
           </div>
         </div>
 
-        {/* Image Generation Section */}
-        <div className="max-w-3xl mx-auto mb-12 bg-white p-8 md:p-10 rounded-sm shadow-lg border border-black/5 relative overflow-hidden">
-            <div className="absolute top-0 left-0 w-1 h-full bg-accent"></div>
-            
-            <div className="text-center mb-8">
-                <h4 className="text-2xl font-serif italic mb-3">{content.imageGen.title}</h4>
-                <p className="text-xs text-void/60 uppercase tracking-widest">{content.imageGen.subtitle}</p>
-            </div>
+        {/* THE DIGITAL ATELIER (Combined Gen AI Section) */}
+        <div className="mb-32 bg-void text-white rounded-sm overflow-hidden shadow-2xl relative border border-white/10">
+            {/* Background Texture */}
+            <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-10"></div>
+            <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-accent/10 rounded-full blur-[120px] pointer-events-none"></div>
 
-            <div className="flex flex-col gap-6 relative">
-                <div className="flex flex-col md:flex-row gap-3">
-                    <input 
-                        type="text" 
-                        value={imagePrompt}
-                        onChange={(e) => setImagePrompt(e.target.value)}
-                        placeholder={content.imageGen.placeholder}
-                        disabled={isGeneratingImage}
-                        className="flex-1 bg-paper border border-black/10 px-6 py-4 rounded-sm text-sm focus:outline-none focus:border-accent transition-colors disabled:opacity-50"
-                        onKeyDown={(e) => e.key === 'Enter' && handleGenerateImage()}
-                    />
-                    <button
-                        onClick={handleGenerateImage}
-                        disabled={isGeneratingImage || !imagePrompt}
-                        className="bg-void text-white px-8 py-4 rounded-sm hover:bg-accent transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 min-w-[160px]"
-                    >
-                        {isGeneratingImage ? <Loader2 size={18} className="animate-spin" /> : <ImageIcon size={18} />}
-                        <span className="text-xs font-bold uppercase tracking-widest">{content.imageGen.button}</span>
-                    </button>
+            <div className="relative z-10 p-10 md:p-16">
+                <div className="flex items-center gap-4 mb-12">
+                   <Tooltip text="Generative Suite">
+                    <div className="p-3 border border-white/20 rounded-md bg-white/5">
+                        <Wand2 size={24} className="text-accent" />
+                    </div>
+                   </Tooltip>
+                   <div>
+                      <h3 className="text-2xl font-serif italic">The Digital Atelier</h3>
+                      <p className="text-xs uppercase tracking-widest text-white/40">Prototyping Future Realities</p>
+                   </div>
                 </div>
 
-                {imageError && (
-                    <div className="flex items-center gap-2 text-accent text-xs animate-fadeIn justify-center bg-accent/5 p-3 rounded-sm">
-                        <AlertCircle size={14} />
-                        <span>Generation failed. Please try a different prompt.</span>
-                    </div>
-                )}
-
-                {generatedManifestoImage && (
-                    <div className="relative mt-4 aspect-video bg-black/5 rounded-sm overflow-hidden animate-fadeIn group shadow-inner border border-black/10">
-                        <img src={generatedManifestoImage} alt="Generated Vision" className="w-full h-full object-cover" />
-                        <button 
-                            onClick={() => setGeneratedManifestoImage(null)}
-                            className="absolute top-4 right-4 w-8 h-8 bg-black/50 backdrop-blur text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all hover:bg-accent hover:scale-110"
-                        >
-                            <X size={16} />
-                        </button>
-                         <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/90 via-black/50 to-transparent text-white translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-                            <span className="text-[10px] uppercase tracking-widest text-accent mb-1 block">Prompt</span>
-                            <p className="text-sm font-serif italic opacity-90">"{imagePrompt}"</p>
+                <div className="grid lg:grid-cols-2 gap-12">
+                    
+                    {/* Image Gen Column */}
+                    <div className="bg-white/5 border border-white/10 rounded-sm p-8 flex flex-col h-full hover:border-white/20 transition-colors">
+                        <div className="flex items-center gap-3 mb-6">
+                            <Tooltip text="Imagen 3 Model">
+                                <div className="cursor-help">
+                                    <ImageIcon size={18} className="text-accent" />
+                                </div>
+                            </Tooltip>
+                            <h4 className="text-sm font-bold uppercase tracking-wide">{content.imageGen.title}</h4>
                         </div>
-                    </div>
-                )}
-            </div>
-        </div>
+                        <p className="text-sm text-white/50 mb-6 flex-grow">{content.imageGen.subtitle}</p>
+                        
+                        <div className="space-y-4">
+                            <input 
+                                type="text" 
+                                value={imagePrompt}
+                                onChange={(e) => setImagePrompt(e.target.value)}
+                                placeholder={content.imageGen.placeholder}
+                                disabled={isGeneratingImage}
+                                className="w-full bg-black/50 border border-white/10 px-4 py-3 rounded-sm text-sm focus:outline-none focus:border-accent transition-colors placeholder:text-white/20"
+                                onKeyDown={(e) => e.key === 'Enter' && handleGenerateImage()}
+                            />
+                            <button
+                                onClick={handleGenerateImage}
+                                disabled={isGeneratingImage || !imagePrompt}
+                                className="w-full bg-white text-void px-6 py-3 rounded-sm hover:bg-accent hover:text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 uppercase tracking-widest text-xs font-bold"
+                            >
+                                {isGeneratingImage ? <Loader2 size={14} className="animate-spin" /> : 'Generate Concept'}
+                            </button>
+                        </div>
 
-        {/* Video Generation Section */}
-        <div className="max-w-3xl mx-auto mb-24 bg-void text-white p-8 md:p-10 rounded-sm shadow-2xl border border-white/10 relative overflow-hidden">
-             {/* Decorative background blur */}
-            <div className="absolute -top-10 -right-10 w-64 h-64 bg-accent/20 rounded-full blur-3xl pointer-events-none"></div>
-            
-            <div className="relative z-10 text-center mb-8">
-                <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-white/10 mb-4">
-                   <Video size={24} className="text-accent" />
+                        {/* Image Output Area */}
+                        {generatedManifestoImage ? (
+                           <div className="mt-6 relative aspect-video bg-black rounded-sm overflow-hidden animate-fadeIn border border-white/20 group">
+                              <img src={generatedManifestoImage} alt="Generated" className="w-full h-full object-cover" />
+                              <button onClick={() => setGeneratedManifestoImage(null)} className="absolute top-2 right-2 bg-black/50 p-1 rounded-full text-white hover:bg-accent opacity-0 group-hover:opacity-100 transition-opacity"><X size={14}/></button>
+                           </div>
+                        ) : (
+                           <div className="mt-6 aspect-video bg-black/20 border border-white/5 rounded-sm flex items-center justify-center text-white/10 text-xs uppercase tracking-widest">
+                               {isGeneratingImage ? 'Rendering...' : 'Output Display'}
+                           </div>
+                        )}
+                        {imageError && <p className="text-accent text-xs mt-2 text-center">Generation failed.</p>}
+                    </div>
+
+                    {/* Video Gen Column */}
+                    <div className="bg-white/5 border border-white/10 rounded-sm p-8 flex flex-col h-full hover:border-white/20 transition-colors">
+                        <div className="flex items-center gap-3 mb-6">
+                            <Tooltip text="Veo Video Model">
+                                <div className="cursor-help">
+                                    <Video size={18} className="text-accent" />
+                                </div>
+                            </Tooltip>
+                            <h4 className="text-sm font-bold uppercase tracking-wide">{content.videoGen.title}</h4>
+                        </div>
+                        <p className="text-sm text-white/50 mb-6 flex-grow">{content.videoGen.subtitle}</p>
+
+                        <div className="space-y-4">
+                            <div className="w-full bg-black/50 border border-white/10 px-4 py-3 rounded-sm text-sm text-white/40 cursor-not-allowed italic">
+                               Preset: Strategic Roadmap Cinematic Montage
+                            </div>
+                            <button
+                                onClick={handleGenerateVideo}
+                                disabled={isGeneratingVideo}
+                                className="w-full bg-accent text-white px-6 py-3 rounded-sm hover:bg-white hover:text-void transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 uppercase tracking-widest text-xs font-bold"
+                            >
+                                {isGeneratingVideo ? <Loader2 size={14} className="animate-spin" /> : 'Generate Video'}
+                            </button>
+                        </div>
+
+                         {/* Video Output Area */}
+                         {generatedVideoUrl ? (
+                           <div className="mt-6 relative aspect-video bg-black rounded-sm overflow-hidden animate-fadeIn border border-white/20 group">
+                              <video src={generatedVideoUrl} controls autoPlay loop className="w-full h-full object-cover" />
+                              <button onClick={() => setGeneratedVideoUrl(null)} className="absolute top-2 right-2 bg-black/50 p-1 rounded-full text-white hover:bg-accent opacity-0 group-hover:opacity-100 transition-opacity"><X size={14}/></button>
+                           </div>
+                        ) : (
+                           <div className="mt-6 aspect-video bg-black/20 border border-white/5 rounded-sm flex items-center justify-center text-white/10 text-xs uppercase tracking-widest flex-col gap-2">
+                               {isGeneratingVideo ? (
+                                 <>
+                                  <Loader2 size={20} className="animate-spin text-accent"/>
+                                  <span>Processing Frames...</span>
+                                 </>
+                               ) : 'Video Display'}
+                           </div>
+                        )}
+                        {videoError && <p className="text-accent text-xs mt-2 text-center">Video generation failed.</p>}
+                    </div>
+
                 </div>
-                <h4 className="text-2xl font-serif italic mb-3">{content.videoGen.title}</h4>
-                <p className="text-xs text-white/60 uppercase tracking-widest max-w-md mx-auto">{content.videoGen.subtitle}</p>
             </div>
-
-            <div className="relative z-10 flex flex-col items-center gap-6">
-                <button
-                    onClick={handleGenerateVideo}
-                    disabled={isGeneratingVideo}
-                    className="bg-accent text-white px-10 py-4 rounded-sm hover:bg-white hover:text-void transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 min-w-[200px] shadow-[0_0_20px_rgba(217,70,37,0.4)] hover:shadow-none"
-                >
-                    {isGeneratingVideo ? <Loader2 size={18} className="animate-spin" /> : <Sparkles size={18} />}
-                    <span className="text-xs font-bold uppercase tracking-widest">{content.videoGen.button}</span>
-                </button>
-
-                {isGeneratingVideo && (
-                  <div className="text-xs text-white/50 animate-pulse">
-                    {content.videoGen.loading}
-                  </div>
-                )}
-
-                {videoError && (
-                    <div className="flex items-center gap-2 text-accent text-xs animate-fadeIn justify-center bg-white/5 p-3 rounded-sm border border-accent/20">
-                        <AlertCircle size={14} />
-                        <span>Video generation failed. Please try again.</span>
-                    </div>
-                )}
-
-                {generatedVideoUrl && (
-                    <div className="relative w-full aspect-video bg-black rounded-sm overflow-hidden animate-fadeIn border border-white/10 shadow-2xl mt-4">
-                        <video 
-                          controls 
-                          className="w-full h-full object-cover" 
-                          src={generatedVideoUrl} 
-                          autoPlay
-                          loop
-                        />
-                        <button 
-                            onClick={() => setGeneratedVideoUrl(null)}
-                            className="absolute top-4 right-4 w-8 h-8 bg-white/10 backdrop-blur text-white rounded-full flex items-center justify-center hover:bg-accent transition-colors z-20"
-                        >
-                            <X size={16} />
-                        </button>
-                    </div>
-                )}
-            </div>
-        </div>
-
-        {/* Key Works Carousel */}
-        <div className="mb-24">
-          <h4 className="text-center font-serif text-2xl mb-10 italic text-void/80">{content.carousel.title}</h4>
-          <div className="relative max-w-4xl mx-auto aspect-[16/9] bg-black rounded-sm overflow-hidden shadow-2xl group">
-             
-             {/* Slides */}
-             {content.carousel.items.map((item, index) => (
-               <div 
-                  key={index} 
-                  className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${index === currentSlide ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
-               >
-                  <img src={item.image} alt={item.altText} className="w-full h-full object-cover opacity-80 group-hover:opacity-60 transition-opacity duration-500" />
-                  <div className="absolute bottom-0 left-0 right-0 p-8 bg-gradient-to-t from-black/80 to-transparent text-white">
-                    <h5 className="text-2xl font-serif italic mb-1">{item.caption}</h5>
-                    <p className="text-xs uppercase tracking-widest text-accent">{item.artist}</p>
-                  </div>
-               </div>
-             ))}
-
-             {/* Controls */}
-             <button 
-               onClick={prevSlide}
-               className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 backdrop-blur hover:bg-accent text-white flex items-center justify-center transition-all opacity-0 group-hover:opacity-100 hover:scale-110"
-               aria-label="Previous slide"
-             >
-               <ChevronLeft size={24} />
-             </button>
-             <button 
-               onClick={nextSlide}
-               className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 backdrop-blur hover:bg-accent text-white flex items-center justify-center transition-all opacity-0 group-hover:opacity-100 hover:scale-110"
-               aria-label="Next slide"
-             >
-               <ChevronRight size={24} />
-             </button>
-
-             {/* Indicators */}
-             <div className="absolute top-6 right-6 flex gap-2">
-               {content.carousel.items.map((_, idx) => (
-                 <div 
-                    key={idx} 
-                    className={`h-1 rounded-full transition-all ${idx === currentSlide ? 'bg-accent w-8' : 'bg-white/50 w-2'}`}
-                 ></div>
-               ))}
-             </div>
-
-          </div>
         </div>
 
         {/* Timeline & Budget Section */}
-        <div className="grid md:grid-cols-2 gap-16">
+        <div className="grid lg:grid-cols-2 gap-20">
           
           {/* Operational Timeline */}
           <div>
-            <h4 className="flex items-center gap-2 text-xl font-serif mb-8 text-void/90">
-              <Calendar className="text-accent" size={24} /> {content.timeline.title}
-            </h4>
-            <div className="space-y-8 border-l-2 border-black/10 pl-8 relative">
+             <div className="flex items-center gap-3 mb-8">
+               <Calendar className="text-accent" size={24} /> 
+               <h4 className="text-xl font-serif italic">{content.timeline.title}</h4>
+             </div>
+            
+            <div className="space-y-0 pl-4 border-l border-black/10">
               {content.timeline.phases.map((item, i) => (
-                <div key={i} className="relative group">
-                   <div className={`absolute -left-[41px] w-5 h-5 rounded-full border-4 border-paper transition-colors ${item.current ? 'bg-accent scale-125' : 'bg-void/20 group-hover:bg-void/40'}`}></div>
-                   <span className="text-xs font-bold uppercase tracking-widest text-accent block mb-1">{item.phase}: {item.dates}</span>
-                   <h5 className="text-lg font-bold mb-1">{item.title}</h5>
-                   <p className="text-sm text-void/60">{item.desc}</p>
+                <div key={i} className={`relative pl-8 py-6 group border-b border-black/5 last:border-0 hover:bg-white/40 transition-colors rounded-r-md`}>
+                   <div className={`absolute -left-[5px] top-8 w-2.5 h-2.5 rounded-full border-2 border-paper transition-all duration-300 ${item.current ? 'bg-accent scale-150' : 'bg-void/20 group-hover:bg-accent'}`}></div>
+                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-1">
+                      <h5 className={`text-base font-bold transition-colors ${item.current ? 'text-accent' : 'text-void'}`}>{item.title}</h5>
+                      <span className="text-[10px] uppercase tracking-widest text-void/40 font-mono bg-black/5 px-2 py-1 rounded-sm">{item.dates}</span>
+                   </div>
+                   <p className="text-sm text-void/60 leading-relaxed max-w-md">{item.desc}</p>
                 </div>
               ))}
             </div>
@@ -367,29 +323,33 @@ const Manifesto: React.FC<ManifestoProps> = ({ language }) => {
 
           {/* Budgetary Framework */}
           <div>
-            <h4 className="flex items-center gap-2 text-xl font-serif mb-8 text-void/90">
-              <TrendingUp className="text-accent" size={24} /> {content.budget.title}
-            </h4>
+            <div className="flex items-center gap-3 mb-8">
+               <TrendingUp className="text-accent" size={24} /> 
+               <h4 className="text-xl font-serif italic">{content.budget.title}</h4>
+             </div>
             
-            <div className="bg-white p-8 rounded-sm border border-black/5 shadow-sm mb-8 hover:shadow-md transition-shadow">
-              <h5 className="text-xs font-bold uppercase tracking-widest mb-6 text-void/40">{content.budget.allocationTitle}</h5>
-              <ul className="space-y-4">
+            <div className="bg-white p-10 rounded-sm border border-black/5 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] mb-8">
+              <h5 className="text-[10px] font-bold uppercase tracking-widest mb-6 text-void/30 border-b border-black/5 pb-2">{content.budget.allocationTitle}</h5>
+              <ul className="space-y-5">
                 {content.budget.items.map((expense, i) => (
-                  <li key={i} className="flex items-center gap-3 text-sm">
-                    <div className="w-1.5 h-1.5 bg-accent rounded-full"></div>
-                    {expense}
+                  <li key={i} className="flex items-center justify-between text-sm group">
+                    <span className="text-void/80 group-hover:text-accent transition-colors">{expense}</span>
+                    <div className="w-16 h-1 bg-black/5 rounded-full overflow-hidden">
+                       <div className="h-full bg-accent opacity-0 group-hover:opacity-100 transition-all w-[70%]"></div>
+                    </div>
                   </li>
                 ))}
               </ul>
             </div>
 
-             <div className="bg-void/5 p-8 rounded-sm border border-black/5 hover:bg-void/10 transition-colors">
-              <h5 className="text-xs font-bold uppercase tracking-widest mb-6 text-void/40">{content.budget.incomeTitle}</h5>
-               <ul className="space-y-4">
+             <div className="bg-void text-white p-10 rounded-sm border border-black/5 relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-accent/20 rounded-full blur-3xl"></div>
+              <h5 className="text-[10px] font-bold uppercase tracking-widest mb-6 text-white/30 border-b border-white/10 pb-2">{content.budget.incomeTitle}</h5>
+               <ul className="space-y-4 relative z-10">
                 {content.budget.income.map((inc, i) => (
-                  <li key={i} className="flex items-start gap-3 text-sm">
-                    <Flag size={16} className="mt-0.5 opacity-50 min-w-[16px]"/>
-                    <span>{inc}</span>
+                  <li key={i} className="flex items-start gap-4 text-sm">
+                    <Flag size={14} className="mt-1 text-accent"/>
+                    <span className="text-white/70">{inc}</span>
                   </li>
                 ))}
                </ul>
