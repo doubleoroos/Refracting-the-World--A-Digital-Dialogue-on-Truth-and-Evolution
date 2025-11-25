@@ -40,7 +40,7 @@ const App: React.FC = () => {
 
       <footer className="py-12 border-t border-white/10 text-center text-white/30 text-xs tracking-widest uppercase">
         <p className="mb-2">{language === 'en' ? 'Commission #1 Submission' : 'Soumission Commission n°1'}</p>
-        <p>Earth Rising Foundation © 2025</p>
+        <p>Foundation Earth Rising © 2025</p>
       </footer>
     </div>
   );

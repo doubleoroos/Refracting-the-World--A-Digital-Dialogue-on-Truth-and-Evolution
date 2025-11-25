@@ -72,7 +72,7 @@ export const CONTENT: Record<Language, Content> = {
       title: 'Refracting the World',
       subtitle: 'A Digital Dialogue on Truth and Evolution',
       intro: React.createElement(React.Fragment, null, 
-        "Submitted by ", React.createElement("strong", null, "Earth Rising Foundation"), ".", React.createElement("br"), React.createElement("br"), "In the age of AI and deep-fakes, the \"Utopia of Accuracy\" is fractured. We invite you to deconstruct 200 years of seeing."
+        "Submitted by ", React.createElement("strong", null, "Foundation Earth Rising"), ".", React.createElement("br"), React.createElement("br"), "In the age of AI and deep-fakes, the \"Utopia of Accuracy\" is fractured. We invite you to deconstruct 200 years of seeing."
       ),
       cta: 'Start the Dialogue'
     },
@@ -122,7 +122,7 @@ export const CONTENT: Record<Language, Content> = {
     team: {
       tag: 'The Consortium',
       title: 'Collaborative Vision',
-      desc: 'A unique collaboration between Dutch non-profit Earth Rising and international artistic talent.'
+      desc: 'A unique collaboration between Dutch non-profit Foundation Earth Rising and international artistic talent.'
     },
     manifesto: {
       tag: 'Strategic Alignment & Roadmap',
@@ -197,12 +197,12 @@ export const CONTENT: Record<Language, Content> = {
           "Artistic Production (Fees & Copyright)",
           "Technical Development (Web Arch & Accessibility)",
           "Editorial & Education (Translation & PDF Kits)",
-          "Project Management (Earth Rising)",
+          "Project Management (Foundation Earth Rising)",
           "Marketing (Digital Promotion)"
         ],
         incomeTitle: 'Income Sources',
         income: [
-          "Own Contributions: Earth Rising Foundation",
+          "Own Contributions: Foundation Earth Rising",
           "Grants: Dutch Cultural Funds",
           "In-Kind: Technical partnerships"
         ]
