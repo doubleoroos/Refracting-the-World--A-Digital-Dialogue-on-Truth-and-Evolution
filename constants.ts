@@ -74,7 +74,7 @@ export const CONTENT: Record<Language, Content> = {
       intro: React.createElement(React.Fragment, null, 
         "Submitted by ", React.createElement("strong", null, "Foundation Earth Rising"), ".", React.createElement("br"), React.createElement("br"), "In the age of AI and deep-fakes, the \"Utopia of Accuracy\" is fractured. We invite you to deconstruct 200 years of seeing."
       ),
-      cta: 'Start the Dialogue'
+      cta: 'Scroll Down'
     },
     pillarA: {
       tag: 'Pillar A: Perception Slider',
@@ -187,7 +187,7 @@ export const CONTENT: Record<Language, Content> = {
           { phase: "Phase 2", dates: "April 2026 – July 2026", title: "Development & Design", desc: "UX/UI design, WCAG audit, Educational copy (FR/EN)." },
           { phase: "Phase 3", dates: "August 2026", title: "Testing & Pre-launch", desc: "Beta testing with educators & Green Hosting setup." },
           { phase: "Phase 4", dates: "September 2026", title: "Official Launch", desc: "Go-live to coincide with Bicentennial start.", current: true },
-          { phase: "Phase 5", dates: "Sept 2026 – Sept 2027", title: "Dissemination", desc: "Fonctionnalités mensuelles & campagne réseaux sociaux." },
+          { phase: "Phase 5", dates: "Sept 2026 – Sept 2027", title: "Dissemination", desc: "Monthly release of new artist features." },
         ]
       },
       budget: {
@@ -229,7 +229,7 @@ export const CONTENT: Record<Language, Content> = {
       intro: React.createElement(React.Fragment, null, 
         "Soumis par la ", React.createElement("strong", null, "Fondation Earth Rising"), ".", React.createElement("br"), React.createElement("br"), "À l'ère de l'IA et des deep-fakes, \"l'Utopie de l'Exactitude\" est fracturée. Nous vous invitons à déconstruire 200 ans de vision."
       ),
-      cta: 'Lancer le Dialogue'
+      cta: 'Défiler vers le bas'
     },
     pillarA: {
       tag: 'Pilier A : Curseur de Perception',
