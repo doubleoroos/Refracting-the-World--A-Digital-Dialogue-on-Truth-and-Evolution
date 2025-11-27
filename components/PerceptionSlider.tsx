@@ -52,7 +52,7 @@ const PerceptionSlider: React.FC<PerceptionSliderProps> = ({ language }) => {
   };
 
   return (
-    <section id={Section.PILLAR_1} className="py-24 px-6 md:px-12 relative border-t border-white/5">
+    <section id={Section.PILLAR_1} className="py-24 px-6 md:px-12 relative border-t border-white/5 bg-void">
       {/* Background Gradient Mesh */}
       <div className="absolute inset-0 bg-gradient-to-b from-void via-void to-accent/5 pointer-events-none"></div>
 
@@ -61,7 +61,7 @@ const PerceptionSlider: React.FC<PerceptionSliderProps> = ({ language }) => {
         {/* Text Content & HUD Controls */}
         <div className="order-2 lg:order-1">
           <div className="flex items-center gap-4 mb-8">
-             <div className="w-12 h-12 border border-white/10 bg-white/5 rounded-full flex items-center justify-center font-serif text-2xl text-white/60 shadow-inner" aria-hidden="true">A</div>
+             <div className="w-12 h-12 border border-white/10 bg-white/5 rounded-full flex items-center justify-center font-serif text-2xl text-white/60 shadow-inner backdrop-blur-md" aria-hidden="true">A</div>
             <h3 className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-orange-500 tracking-[0.2em] uppercase text-xs font-bold">{content.tag}</h3>
           </div>
           
@@ -69,32 +69,32 @@ const PerceptionSlider: React.FC<PerceptionSliderProps> = ({ language }) => {
             {content.title}
           </h2>
           
-          <div className="mb-10 space-y-4 text-white/70 leading-relaxed text-base border-l-2 border-white/10 pl-6">
+          <div className="mb-10 space-y-4 text-white/70 leading-relaxed text-base border-l-2 border-white/5 pl-6 font-light">
             {content.description}
           </div>
 
           {/* AI HUD Control Panel - Glassmorphism */}
-          <div className="relative bg-void/40 backdrop-blur-2xl border border-white/10 rounded-xl overflow-hidden shadow-[0_8px_32px_0_rgba(0,0,0,0.5)] ring-1 ring-white/5">
+          <div className="relative bg-void/60 backdrop-blur-2xl border border-white/10 rounded-2xl overflow-hidden shadow-[0_20px_50px_-10px_rgba(0,0,0,0.7)] ring-1 ring-white/5">
             {/* Technical Header */}
-            <div className="flex justify-between items-center px-6 py-3 border-b border-white/5 bg-white/5">
+            <div className="flex justify-between items-center px-6 py-4 border-b border-white/5 bg-white/5">
                <div className="flex items-center gap-2">
-                 <ScanEye size={16} className="text-accent" />
-                 <span className="text-[10px] uppercase tracking-widest text-white/50 font-bold">Analysis Module // Ver. 2.5</span>
+                 <ScanEye size={14} className="text-accent" />
+                 <span className="text-[9px] uppercase tracking-[0.2em] text-white/40 font-bold font-mono">Analysis Module // Ver. 2.5</span>
                </div>
                <div className="flex gap-1.5" aria-hidden="true">
-                 <div className="w-1.5 h-1.5 bg-white/20 rounded-full"></div>
-                 <div className="w-1.5 h-1.5 bg-white/20 rounded-full"></div>
+                 <div className="w-1.5 h-1.5 bg-white/10 rounded-full"></div>
+                 <div className="w-1.5 h-1.5 bg-white/10 rounded-full"></div>
                  <div className="w-1.5 h-1.5 bg-accent rounded-full animate-pulse shadow-[0_0_8px_#d94625]"></div>
                </div>
             </div>
 
             <div className="p-8">
-               <p className="font-mono text-[10px] text-accent mb-4 opacity-70" aria-hidden="true">
-                 {`> AWAITING_INPUT...`}
+               <p className="font-mono text-[9px] text-accent mb-4 opacity-70 tracking-widest" aria-hidden="true">
+                 {`> SYSTEM_STATUS: AWAITING_INPUT...`}
                </p>
                <div role="status" aria-live="polite">
-                 <p className="font-serif text-lg italic text-white/90 mb-8 min-h-[3rem] leading-relaxed">
-                   {aiCommentary ? `"${aiCommentary}"` : <span className="text-white/30">{content.labels.aiPrompt}</span>}
+                 <p className="font-serif text-lg italic text-white/90 mb-8 min-h-[4rem] leading-relaxed">
+                   {aiCommentary ? `"${aiCommentary}"` : <span className="text-white/20">{content.labels.aiPrompt}</span>}
                  </p>
                </div>
 
@@ -102,22 +102,22 @@ const PerceptionSlider: React.FC<PerceptionSliderProps> = ({ language }) => {
                   <button 
                     onClick={handleGenerateInsight}
                     disabled={isLoading || !!aiCommentary}
-                    className="flex items-center justify-center gap-3 px-6 py-4 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-xs uppercase tracking-widest text-white font-bold transition-all disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-accent group hover:shadow-[0_0_15px_rgba(255,255,255,0.1)] relative overflow-hidden"
+                    className="flex items-center justify-center gap-3 px-6 py-4 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-[10px] uppercase tracking-widest text-white font-bold transition-all disabled:opacity-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent group hover:border-white/20 hover:shadow-[0_0_20px_rgba(255,255,255,0.05)] relative overflow-hidden"
                     aria-label={isLoading ? "Analyzing..." : content.labels.aiButton}
                   >
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
-                    <Sparkles size={16} className={`text-accent ${isLoading ? 'animate-spin' : 'group-hover:scale-110 transition-transform'}`} aria-hidden="true" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out"></div>
+                    <Sparkles size={14} className={`text-accent ${isLoading ? 'animate-spin' : 'group-hover:scale-110 transition-transform'}`} aria-hidden="true" />
                     <span>{isLoading ? 'Processing...' : content.labels.aiButton}</span>
                   </button>
 
                   <button 
                     onClick={handleGenerateImage}
                     disabled={isGeneratingImage}
-                    className="flex items-center justify-center gap-3 px-6 py-4 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-xs uppercase tracking-widest text-white font-bold transition-all disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-accent group hover:shadow-[0_0_15px_rgba(255,255,255,0.1)] relative overflow-hidden"
+                    className="flex items-center justify-center gap-3 px-6 py-4 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-[10px] uppercase tracking-widest text-white font-bold transition-all disabled:opacity-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent group hover:border-white/20 hover:shadow-[0_0_20px_rgba(255,255,255,0.05)] relative overflow-hidden"
                     aria-label={isGeneratingImage ? content.labels.visualizeLoading : content.labels.visualizeButton}
                   >
-                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
-                    <ImageIcon size={16} className={`text-accent ${isGeneratingImage ? 'animate-pulse' : 'group-hover:scale-110 transition-transform'}`} aria-hidden="true" />
+                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out"></div>
+                    <ImageIcon size={14} className={`text-accent ${isGeneratingImage ? 'animate-pulse' : 'group-hover:scale-110 transition-transform'}`} aria-hidden="true" />
                     <span>{isGeneratingImage ? content.labels.visualizeLoading : content.labels.visualizeButton}</span>
                   </button>
                </div>
@@ -126,19 +126,19 @@ const PerceptionSlider: React.FC<PerceptionSliderProps> = ({ language }) => {
         </div>
 
         {/* Interactive Slider / Image Result */}
-        <div className="order-1 lg:order-2 relative h-[500px] md:h-[600px] w-full group select-none rounded-xl overflow-hidden shadow-2xl border border-white/10 ring-1 ring-white/5">
+        <div className="order-1 lg:order-2 relative h-[500px] md:h-[600px] w-full group select-none rounded-2xl overflow-hidden shadow-2xl border border-white/10 ring-1 ring-white/5">
           
           {/* Generated Image Overlay */}
           {generatedImage && (
-            <div className="absolute inset-0 z-40 bg-void/90 backdrop-blur-sm animate-fadeIn flex flex-col items-center justify-center p-2">
-              <div className="relative w-full h-full overflow-hidden bg-black rounded-lg shadow-2xl">
+            <div className="absolute inset-0 z-40 bg-void/90 backdrop-blur-sm animate-fadeIn flex flex-col items-center justify-center p-4">
+              <div className="relative w-full h-full overflow-hidden bg-black rounded-xl shadow-2xl border border-white/10">
                 <img src={generatedImage} alt="AI Generated Synthesis" className="w-full h-full object-cover" />
                 <button 
                   onClick={() => setGeneratedImage(null)}
-                  className="absolute top-4 right-4 w-12 h-12 bg-black/60 backdrop-blur-md flex items-center justify-center rounded-full text-white hover:bg-accent transition-colors border border-white/10 focus:outline-none focus:ring-2 focus:ring-white"
+                  className="absolute top-4 right-4 w-10 h-10 bg-black/60 backdrop-blur-md flex items-center justify-center rounded-full text-white hover:bg-accent transition-colors border border-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
                   aria-label="Close generated image"
                 >
-                  <X size={24} />
+                  <X size={20} />
                 </button>
                 <div className="absolute bottom-0 left-0 right-0 p-8 bg-gradient-to-t from-black via-black/80 to-transparent text-white backdrop-blur-sm">
                   <span className="text-[10px] uppercase tracking-widest text-accent block mb-2 font-bold flex items-center gap-2">
@@ -165,7 +165,7 @@ const PerceptionSlider: React.FC<PerceptionSliderProps> = ({ language }) => {
                max="100"
                value={sliderValue}
                onChange={handleSliderChange}
-               className="absolute inset-0 w-full h-full opacity-0 cursor-ew-resize z-50"
+               className="absolute inset-0 w-full h-full opacity-0 cursor-ew-resize z-50 focus:outline-none"
              />
 
              {/* Background: Processed/Artistic */}
@@ -196,21 +196,21 @@ const PerceptionSlider: React.FC<PerceptionSliderProps> = ({ language }) => {
                className="absolute top-0 bottom-0 w-0.5 bg-white/80 z-20 shadow-[0_0_20px_rgba(255,255,255,0.5)] pointer-events-none transition-all duration-75 ease-linear"
                style={{ left: `${sliderValue}%` }}
              >
-               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-14 h-14 bg-white/10 backdrop-blur-xl rounded-full border border-white/50 flex items-center justify-center shadow-[0_0_30px_rgba(0,0,0,0.5)]">
+               <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 bg-white/10 backdrop-blur-xl rounded-full border border-white/50 flex items-center justify-center shadow-[0_0_30px_rgba(0,0,0,0.5)] transition-transform duration-300 ${isHovering ? 'scale-110 border-white' : ''}`}>
                  <MoveHorizontal size={24} className="text-white drop-shadow-md" />
                </div>
              </div>
 
              {/* Labels with Glass Morphism */}
              <div className="absolute top-8 left-8 z-30 pointer-events-none">
-                <span className="bg-black/60 backdrop-blur-md text-white text-[10px] uppercase tracking-widest px-4 py-2 border border-white/10 rounded-full flex items-center gap-2 shadow-lg font-bold">
+                <span className="bg-black/60 backdrop-blur-md text-white text-[9px] uppercase tracking-widest px-4 py-2 border border-white/10 rounded-full flex items-center gap-2 shadow-lg font-bold">
                    <div className="w-1.5 h-1.5 rounded-full bg-white/50"></div>
                    {content.labels.raw}
                 </span>
              </div>
 
              <div className="absolute bottom-8 right-8 z-30 pointer-events-none">
-                <span className="bg-accent/90 backdrop-blur-md shadow-lg text-white text-[10px] uppercase tracking-widest px-4 py-2 border border-white/10 rounded-full flex items-center gap-2 font-bold">
+                <span className="bg-accent/90 backdrop-blur-md shadow-lg text-white text-[9px] uppercase tracking-widest px-4 py-2 border border-white/10 rounded-full flex items-center gap-2 font-bold">
                    <div className="w-1.5 h-1.5 rounded-full bg-white"></div>
                    {content.labels.processed}
                 </span>

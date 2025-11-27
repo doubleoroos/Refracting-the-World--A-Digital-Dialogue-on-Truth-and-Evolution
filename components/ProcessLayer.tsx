@@ -41,14 +41,14 @@ const ProcessLayer: React.FC<ProcessLayerProps> = ({ language }) => {
         {/* Interactive Display */}
         <div className="order-1 relative group perspective-[1000px]">
            {/* Frame */}
-           <div className="relative w-full aspect-[4/5] bg-white p-2 rounded-2xl shadow-[0_20px_50px_-12px_rgba(0,0,0,0.2)] ring-1 ring-black/5 transform transition-transform duration-500 hover:rotate-y-1">
+           <div className="relative w-full aspect-[4/5] bg-white p-2 rounded-2xl shadow-[0_30px_60px_-15px_rgba(0,0,0,0.15)] ring-1 ring-black/5 transform transition-transform duration-700 hover:rotate-y-2 hover:scale-[1.01]">
               <div className="relative w-full h-full overflow-hidden bg-void rounded-xl">
                   
                   {/* Base Image */}
                   <img 
                     src="https://picsum.photos/id/103/800/1000" 
                     alt="Subject for layer analysis"
-                    className={`w-full h-full object-cover transition-all duration-700 ease-in-out ${layers[activeLayer].imageClass}`}
+                    className={`w-full h-full object-cover transition-all duration-1000 ease-in-out ${layers[activeLayer].imageClass}`}
                   />
                   
                   {/* Digital Overlay Layer */}
@@ -83,7 +83,7 @@ const ProcessLayer: React.FC<ProcessLayerProps> = ({ language }) => {
                   </div>
 
                   {/* Layer Toggle - Floating Glass Dock */}
-                  <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex bg-black/70 backdrop-blur-xl border border-white/10 rounded-full p-1.5 gap-2 shadow-2xl z-20 ring-1 ring-white/10">
+                  <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex bg-black/80 backdrop-blur-2xl border border-white/10 rounded-full p-2 gap-2 shadow-2xl z-20 ring-1 ring-white/10">
                     {(Object.keys(layers) as Array<keyof typeof layers>).reverse().map((layerKey) => {
                       const LayerIcon = layers[layerKey].icon;
                       return (
@@ -91,9 +91,9 @@ const ProcessLayer: React.FC<ProcessLayerProps> = ({ language }) => {
                           key={layerKey}
                           onClick={() => setActiveLayer(layerKey)}
                           aria-pressed={activeLayer === layerKey}
-                          className={`relative px-5 py-3 rounded-full flex items-center gap-2 text-[10px] uppercase tracking-widest font-bold transition-all focus:outline-none focus:ring-2 focus:ring-accent
+                          className={`relative px-6 py-3 rounded-full flex items-center gap-2 text-[9px] uppercase tracking-widest font-bold transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-accent
                             ${activeLayer === layerKey 
-                              ? 'bg-white text-black shadow-[0_0_15px_rgba(255,255,255,0.3)] scale-105' 
+                              ? 'bg-white text-black shadow-[0_0_20px_rgba(255,255,255,0.4)] scale-105' 
                               : 'text-white/60 hover:text-white hover:bg-white/10'}`}
                         >
                           <LayerIcon size={14} aria-hidden="true" />
@@ -120,7 +120,7 @@ const ProcessLayer: React.FC<ProcessLayerProps> = ({ language }) => {
           </p>
 
           {/* Dynamic Description Box - Frosted Glass on Light Background */}
-          <div className="bg-white/40 backdrop-blur-xl border border-white/50 p-10 rounded-2xl shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] transition-all duration-300 relative overflow-hidden min-h-[250px] ring-1 ring-white/60">
+          <div className="bg-white/40 backdrop-blur-xl border border-white/50 p-10 rounded-2xl shadow-[0_10px_40px_-10px_rgba(31,38,135,0.05)] transition-all duration-300 relative overflow-hidden min-h-[250px] ring-1 ring-white/60">
              <div className="absolute top-0 left-0 w-1.5 h-full bg-gradient-to-b from-accent to-orange-400"></div>
              <div className="absolute top-[-50%] right-[-10%] w-[300px] h-[300px] bg-gradient-to-br from-white/80 to-transparent rounded-full blur-3xl pointer-events-none"></div>
              
@@ -131,12 +131,12 @@ const ProcessLayer: React.FC<ProcessLayerProps> = ({ language }) => {
                   aria-hidden={activeLayer !== key}
                 >
                    <div className="flex items-center gap-4 mb-4 relative z-10">
-                      <div className="p-3 bg-white rounded-lg shadow-sm">
-                        <data.icon size={24} className="text-accent" />
+                      <div className="p-3 bg-white rounded-lg shadow-sm border border-black/5">
+                        <data.icon size={20} className="text-accent" />
                       </div>
-                      <h4 className="font-bold text-2xl text-void">{data.label}</h4>
+                      <h4 className="font-bold text-xl text-void tracking-tight">{data.label}</h4>
                    </div>
-                   <p className="text-void/70 leading-relaxed text-lg relative z-10">
+                   <p className="text-void/70 leading-relaxed text-lg relative z-10 font-serif">
                       {data.desc}
                    </p>
                 </div>

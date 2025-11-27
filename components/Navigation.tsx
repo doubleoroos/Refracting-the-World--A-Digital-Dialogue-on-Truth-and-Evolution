@@ -33,51 +33,51 @@ const Navigation: React.FC<NavigationProps> = ({ activeSection, onNavigate, lang
     <nav 
       role="navigation"
       aria-label="Main Navigation"
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-700 border-b ${
+      className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${
         scrolled 
-          ? 'bg-void/60 backdrop-blur-xl py-4 border-white/5 shadow-[0_8px_32px_0_rgba(0,0,0,0.37)]' 
-          : 'bg-transparent py-6 border-transparent'
+          ? 'bg-void/70 backdrop-blur-xl py-4 border-b border-white/5 shadow-[0_4px_30px_rgba(0,0,0,0.5)]' 
+          : 'bg-transparent py-6 border-b border-transparent'
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
         <button 
           onClick={() => handleNavClick(Section.HERO)}
-          className="font-serif text-xl tracking-widest cursor-pointer z-50 group focus:outline-none"
+          className="font-serif text-lg md:text-xl tracking-[0.2em] cursor-pointer z-50 group focus:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded px-2"
           aria-label="Refracting the World - Home"
         >
-          REFRACTING <span className="text-white/60 group-hover:text-white transition-colors">THE WORLD</span>
+          REFRACTING <span className="text-white/50 group-hover:text-white transition-colors duration-300">THE WORLD</span>
         </button>
 
         {/* Desktop Nav */}
-        <div className="hidden md:flex items-center gap-2">
-          <ul className="flex items-center bg-white/5 backdrop-blur-md rounded-full p-1 border border-white/10 shadow-lg">
+        <div className="hidden md:flex items-center gap-6">
+          <ul className="flex items-center bg-white/5 backdrop-blur-2xl rounded-full p-1 border border-white/10 shadow-lg">
             {items.map((item) => (
               <li key={item.id}>
                 <button
                   onClick={() => handleNavClick(item.id)}
                   aria-current={activeSection === item.id ? 'page' : undefined}
-                  className={`text-[11px] uppercase tracking-widest px-5 py-2.5 rounded-full transition-all duration-500 font-medium focus:outline-none ${
+                  className={`relative text-[10px] uppercase tracking-widest px-5 py-2.5 rounded-full transition-all duration-300 font-bold focus:outline-none focus-visible:ring-2 focus-visible:ring-accent overflow-hidden group ${
                     activeSection === item.id 
-                      ? 'bg-white text-void font-bold shadow-lg ring-1 ring-white/50' 
-                      : 'text-white/70 hover:text-white hover:bg-white/5'
+                      ? 'bg-white text-void shadow-lg' 
+                      : 'text-white/60 hover:text-white hover:bg-white/5'
                   }`}
                 >
-                  {item.label.split(':')[0]} 
+                   <span className="relative z-10">{item.label.split(':')[0]}</span>
                 </button>
               </li>
             ))}
           </ul>
           
           {/* Language Toggle */}
-          <div className="flex items-center gap-1 ml-4 border-l border-white/10 pl-6">
+          <div className="flex items-center gap-1 border-l border-white/10 pl-6 h-8">
             <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-full p-1 flex shadow-lg" role="group" aria-label="Language Selection">
               <button 
                 onClick={() => onLanguageChange('en')}
                 aria-pressed={language === 'en'}
-                className={`px-4 py-1.5 rounded-full text-[10px] font-bold tracking-widest transition-all focus:outline-none ${
+                className={`px-3 py-1 rounded-full text-[9px] font-bold tracking-widest transition-all focus:outline-none focus-visible:ring-1 focus-visible:ring-white ${
                   language === 'en' 
-                    ? 'bg-gradient-to-r from-accent to-orange-600 text-white shadow-md' 
-                    : 'text-white/60 hover:text-white hover:bg-white/5'
+                    ? 'bg-accent text-white shadow-md' 
+                    : 'text-white/50 hover:text-white hover:bg-white/5'
                 }`}
               >
                 EN
@@ -85,10 +85,10 @@ const Navigation: React.FC<NavigationProps> = ({ activeSection, onNavigate, lang
                <button 
                 onClick={() => onLanguageChange('fr')}
                 aria-pressed={language === 'fr'}
-                className={`px-4 py-1.5 rounded-full text-[10px] font-bold tracking-widest transition-all focus:outline-none ${
+                className={`px-3 py-1 rounded-full text-[9px] font-bold tracking-widest transition-all focus:outline-none focus-visible:ring-1 focus-visible:ring-white ${
                   language === 'fr' 
-                    ? 'bg-gradient-to-r from-accent to-orange-600 text-white shadow-md' 
-                    : 'text-white/60 hover:text-white hover:bg-white/5'
+                    ? 'bg-accent text-white shadow-md' 
+                    : 'text-white/50 hover:text-white hover:bg-white/5'
                 }`}
               >
                 FR
@@ -101,19 +101,19 @@ const Navigation: React.FC<NavigationProps> = ({ activeSection, onNavigate, lang
         <div className="flex items-center gap-4 md:hidden z-50">
            <button 
               onClick={() => onLanguageChange(language === 'en' ? 'fr' : 'en')}
-              className="text-white font-bold text-xs flex items-center gap-2 bg-white/5 backdrop-blur-md px-4 py-2 rounded-full border border-white/10 hover:bg-white/20 transition-colors"
+              className="text-white font-bold text-[10px] flex items-center gap-2 bg-white/5 backdrop-blur-md px-3 py-2 rounded-full border border-white/10 hover:bg-white/20 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
               aria-label={`Switch language to ${language === 'en' ? 'French' : 'English'}`}
             >
-              <Globe size={16}/> {language.toUpperCase()}
+              <Globe size={14}/> {language.toUpperCase()}
             </button>
 
           <button 
-            className="text-white p-2 rounded-full hover:bg-white/10 transition-colors focus:outline-none focus:ring-2 focus:ring-accent"
+            className="text-white p-2 rounded-full hover:bg-white/10 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent active:scale-95 duration-200"
             onClick={() => setIsOpen(!isOpen)}
             aria-expanded={isOpen}
             aria-label="Toggle Navigation Menu"
           >
-            {isOpen ? <X size={28} /> : <Menu size={28} />}
+            {isOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
 
@@ -122,14 +122,17 @@ const Navigation: React.FC<NavigationProps> = ({ activeSection, onNavigate, lang
           className={`fixed inset-0 bg-void/95 backdrop-blur-2xl flex flex-col justify-center items-center gap-8 transition-all duration-500 md:hidden ${isOpen ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'}`}
           aria-hidden={!isOpen}
         >
-           {items.map((item) => (
+           {items.map((item, idx) => (
             <button
               key={item.id}
               onClick={() => handleNavClick(item.id)}
-              className={`text-2xl font-serif italic transition-all px-6 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent ${
+              style={{ transitionDelay: `${idx * 50}ms` }}
+              className={`text-2xl font-serif italic transition-all px-6 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent transform ${
+                isOpen ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
+              } ${
                 activeSection === item.id 
-                  ? 'text-transparent bg-clip-text bg-gradient-to-r from-white to-white/60 font-medium scale-110' 
-                  : 'text-white/50 hover:text-white'
+                  ? 'text-white font-medium scale-110' 
+                  : 'text-white/40 hover:text-white'
               }`}
             >
               {item.label}
