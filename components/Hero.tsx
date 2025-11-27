@@ -23,8 +23,8 @@ const Hero: React.FC<HeroProps> = ({ language }) => {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,#0a0a0a_90%)] z-20"></div>
         <div className="absolute inset-0 bg-gradient-to-t from-void via-transparent to-void/20 z-20"></div>
         <img 
-          src="https://picsum.photos/id/16/2500/1667" 
-          alt="" 
+          src="https://images.unsplash.com/photo-1504333638930-c8787321eee0?q=80&w=2500&auto=format&fit=crop" 
+          alt="Abstract light refraction" 
           className="w-full h-full object-cover opacity-60 grayscale contrast-125 animate-subtle-zoom"
         />
       </div>

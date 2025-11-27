@@ -7,25 +7,25 @@ export const PHOTOGRAPHERS: Record<Language, Photographer[]> = {
       name: 'Roos van der Jagt',
       role: 'Photographer / Curator (NL)',
       bio: 'Curatorial vision focusing on the intersection of historical context and modern interpretation.',
-      image: 'https://picsum.photos/id/338/400/500'
+      image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=800&auto=format&fit=crop'
     },
     {
       name: 'Ronald Tilleman',
       role: 'Architectural / Fine Art (NL)',
       bio: 'Specializes in precise geometric compositions that challenge spatial perception and structural reality.',
-      image: 'https://picsum.photos/id/101/400/500'
+      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=800&auto=format&fit=crop'
     },
     {
       name: 'Prakash Kumararajan',
       role: 'Documentary Photographer (Intl)',
       bio: 'Explores the raw reality of subjects, providing the "Reference Reality" for our visual experiments.',
-      image: 'https://picsum.photos/id/203/400/500'
+      image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=800&auto=format&fit=crop'
     },
     {
       name: 'Mike Pasarella',
       role: 'Conceptual / Abstract (NL)',
       bio: 'Pushes the medium towards abstraction, questioning where photography ends and digital art begins.',
-      image: 'https://picsum.photos/id/244/400/500'
+      image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=800&auto=format&fit=crop'
     }
   ],
   fr: [
@@ -33,25 +33,25 @@ export const PHOTOGRAPHERS: Record<Language, Photographer[]> = {
       name: 'Roos van der Jagt',
       role: 'Photographe / Commissaire (NL)',
       bio: 'Vision curatoriale axée sur l\'intersection du contexte historique et de l\'interprétation moderne.',
-      image: 'https://picsum.photos/id/338/400/500'
+      image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=800&auto=format&fit=crop'
     },
     {
       name: 'Ronald Tilleman',
       role: 'Architecture / Beaux-Arts (NL)',
       bio: 'Spécialisé dans les compositions géométriques précises qui défient la perception spatiale.',
-      image: 'https://picsum.photos/id/101/400/500'
+      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=800&auto=format&fit=crop'
     },
     {
       name: 'Prakash Kumararajan',
       role: 'Photographe Documentaire (Intl)',
       bio: 'Explore la réalité brute des sujets, fournissant la "Réalité de Référence" pour nos expériences.',
-      image: 'https://picsum.photos/id/203/400/500'
+      image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=800&auto=format&fit=crop'
     },
     {
       name: 'Mike Pasarella',
       role: 'Conceptuel / Abstrait (NL)',
       bio: 'Pousse le médium vers l\'abstraction, questionnant la limite entre photographie et art numérique.',
-      image: 'https://picsum.photos/id/244/400/500'
+      image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=800&auto=format&fit=crop'
     }
   ]
 };
@@ -155,25 +155,25 @@ export const CONTENT: Record<Language, Content> = {
         title: 'Curated Key Works',
         items: [
           {
-            image: 'https://picsum.photos/id/56/1200/800',
+            image: 'https://images.unsplash.com/photo-1477414348463-c0eb7f1359b6?q=80&w=1200&auto=format&fit=crop',
             caption: 'Geometric Silence',
             artist: 'Ronald Tilleman',
             altText: 'Black and white architectural photograph emphasizing sharp geometric angles and deep contrast.'
           },
           {
-             image: 'https://picsum.photos/id/122/1200/800',
+             image: 'https://images.unsplash.com/photo-1495615080073-6b89c9839ce0?q=80&w=1200&auto=format&fit=crop',
              caption: 'Urban Distortion',
              artist: 'Mike Pasarella',
              altText: 'Abstract urban photography featuring blurred city lights and distorted vertical structures.'
           },
           {
-            image: 'https://picsum.photos/id/203/1200/800',
+            image: 'https://images.unsplash.com/photo-1554151228-14d9def656ec?q=80&w=1200&auto=format&fit=crop',
             caption: 'The Human Condition',
             artist: 'Prakash Kumararajan',
             altText: 'Close-up black and white portrait revealing detailed textures and emotional expression of the human face.'
           },
           {
-            image: 'https://picsum.photos/id/338/1200/800',
+            image: 'https://images.unsplash.com/photo-1461360370896-922624d12aa1?q=80&w=1200&auto=format&fit=crop',
             caption: 'Echoes of History',
             artist: 'Roos van der Jagt',
             altText: 'Atmospheric composition blending historical architecture with modern digital overlays and lighting.'
@@ -310,25 +310,25 @@ export const CONTENT: Record<Language, Content> = {
         title: 'Œuvres Clés Sélectionnées',
         items: [
           {
-            image: 'https://picsum.photos/id/56/1200/800',
+            image: 'https://images.unsplash.com/photo-1477414348463-c0eb7f1359b6?q=80&w=1200&auto=format&fit=crop',
             caption: 'Silence Géométrique',
             artist: 'Ronald Tilleman',
             altText: 'Photographie architecturale en noir et blanc mettant l\'accent sur des angles géométriques nets et le contraste.'
           },
           {
-             image: 'https://picsum.photos/id/122/1200/800',
+             image: 'https://images.unsplash.com/photo-1495615080073-6b89c9839ce0?q=80&w=1200&auto=format&fit=crop',
              caption: 'Distorsion Urbaine',
              artist: 'Mike Pasarella',
              altText: 'Photographie urbaine abstraite mettant en vedette des lumières de ville floues et des structures déformées.'
           },
           {
-            image: 'https://picsum.photos/id/203/1200/800',
+            image: 'https://images.unsplash.com/photo-1554151228-14d9def656ec?q=80&w=1200&auto=format&fit=crop',
             caption: 'La Condition Humaine',
             artist: 'Prakash Kumararajan',
             altText: 'Portrait noir et blanc en gros plan révélant les textures détaillées et l\'expression émotionnelle du visage humain.'
           },
           {
-            image: 'https://picsum.photos/id/338/1200/800',
+            image: 'https://images.unsplash.com/photo-1461360370896-922624d12aa1?q=80&w=1200&auto=format&fit=crop',
             caption: 'Échos de l\'Histoire',
             artist: 'Roos van der Jagt',
             altText: 'Composition atmosphérique mélangeant architecture historique et superpositions numériques modernes.'

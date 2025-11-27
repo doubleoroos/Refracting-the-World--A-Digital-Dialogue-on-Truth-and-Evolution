@@ -46,7 +46,7 @@ const ProcessLayer: React.FC<ProcessLayerProps> = ({ language }) => {
                   
                   {/* Base Image */}
                   <img 
-                    src="https://picsum.photos/id/103/800/1000" 
+                    src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=80&w=1000&auto=format&fit=crop" 
                     alt="Subject for layer analysis"
                     className={`w-full h-full object-cover transition-all duration-1000 ease-in-out ${layers[activeLayer].imageClass}`}
                   />

@@ -171,7 +171,7 @@ const PerceptionSlider: React.FC<PerceptionSliderProps> = ({ language }) => {
              {/* Background: Processed/Artistic */}
              <div className="absolute inset-0">
                <img 
-                 src="https://picsum.photos/id/249/800/1000" 
+                 src="https://images.unsplash.com/photo-1486325212027-8081e485255e?q=80&w=1200&auto=format&fit=crop" 
                  alt="Artistic Truth: High contrast, slightly desaturated interpretation"
                  className="w-full h-full object-cover grayscale-[20%] contrast-125 brightness-110"
                />
@@ -184,7 +184,7 @@ const PerceptionSlider: React.FC<PerceptionSliderProps> = ({ language }) => {
                style={{ clipPath: `polygon(0 0, ${sliderValue}% 0, ${sliderValue}% 100%, 0 100%)` }}
              >
                 <img 
-                 src="https://picsum.photos/id/249/800/1000" 
+                 src="https://images.unsplash.com/photo-1486325212027-8081e485255e?q=80&w=1200&auto=format&fit=crop" 
                  alt="Reference Reality: Grayscale, raw documentary style"
                  className="absolute w-full h-full object-cover grayscale contrast-125 brightness-75 sepia-[.2]"
                />
