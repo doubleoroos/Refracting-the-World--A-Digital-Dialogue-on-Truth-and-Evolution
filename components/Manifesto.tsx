@@ -15,8 +15,8 @@ interface ManifestoProps {
 }
 
 // Enhanced Premium Tooltip
-const Tooltip: React.FC<{ text: string; children: React.ReactNode }> = ({ text, children }) => (
-  <div className="relative group flex items-center justify-center">
+const Tooltip: React.FC<{ text: string; children: React.ReactNode; className?: string }> = ({ text, children, className = "" }) => (
+  <div className={`relative group flex items-center justify-center ${className}`}>
     {children}
     <div 
       role="tooltip"
@@ -236,13 +236,15 @@ const Manifesto: React.FC<ManifestoProps> = ({ language }) => {
                                 className="w-full bg-black/40 border border-white/10 px-4 py-4 rounded-xl text-sm text-white focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-colors placeholder:text-white/20"
                                 onKeyDown={(e) => e.key === 'Enter' && handleGenerateImage()}
                             />
-                            <button
-                                onClick={handleGenerateImage}
-                                disabled={isGeneratingImage || !imagePrompt}
-                                className="w-full bg-white text-void px-6 py-4 rounded-xl hover:bg-accent hover:text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 uppercase tracking-widest text-xs font-bold focus:outline-none focus:ring-2 focus:ring-white shadow-lg"
-                            >
-                                {isGeneratingImage ? <Loader2 size={16} className="animate-spin" /> : 'Generate Concept'}
-                            </button>
+                            <Tooltip text="Requires API Key" className="w-full">
+                                <button
+                                    onClick={handleGenerateImage}
+                                    disabled={isGeneratingImage || !imagePrompt}
+                                    className="w-full bg-white text-void px-6 py-4 rounded-xl hover:bg-accent hover:text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 uppercase tracking-widest text-xs font-bold focus:outline-none focus:ring-2 focus:ring-white shadow-lg"
+                                >
+                                    {isGeneratingImage ? <Loader2 size={16} className="animate-spin" /> : 'Generate Concept'}
+                                </button>
+                            </Tooltip>
                         </div>
 
                         {/* Image Output Area */}
@@ -282,13 +284,15 @@ const Manifesto: React.FC<ManifestoProps> = ({ language }) => {
                                <span>Preset: Strategic Roadmap Cinematic Montage</span>
                                <Tooltip text="Preset: High Quality 720p"><div className="w-2 h-2 rounded-full bg-accent animate-pulse"></div></Tooltip>
                             </div>
-                            <button
-                                onClick={handleGenerateVideo}
-                                disabled={isGeneratingVideo}
-                                className="w-full bg-gradient-to-r from-accent to-orange-600 text-white px-6 py-4 rounded-xl hover:shadow-[0_0_20px_rgba(217,70,37,0.4)] transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 uppercase tracking-widest text-xs font-bold focus:outline-none focus:ring-2 focus:ring-white shadow-lg"
-                            >
-                                {isGeneratingVideo ? <Loader2 size={16} className="animate-spin" /> : 'Generate Video'}
-                            </button>
+                            <Tooltip text="Requires API Key and may take time" className="w-full">
+                                <button
+                                    onClick={handleGenerateVideo}
+                                    disabled={isGeneratingVideo}
+                                    className="w-full bg-gradient-to-r from-accent to-orange-600 text-white px-6 py-4 rounded-xl hover:shadow-[0_0_20px_rgba(217,70,37,0.4)] transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 uppercase tracking-widest text-xs font-bold focus:outline-none focus:ring-2 focus:ring-white shadow-lg"
+                                >
+                                    {isGeneratingVideo ? <Loader2 size={16} className="animate-spin" /> : 'Generate Video'}
+                                </button>
+                            </Tooltip>
                         </div>
 
                          {/* Video Output Area */}
